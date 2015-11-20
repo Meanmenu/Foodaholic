@@ -9,6 +9,7 @@ Foodaholic allows you to discover great local restaurants by seeing pictures and
 	- (Optional) the notification will be automatically dismiss once the app leave the beacon region.
 	- The user must have the option to disable notifications. (Optional) The notifications can be disabled by time intervals.
 2. When the app is executed it will display the closest restaurants in two separated tabs one for the list of restaurants with a picture and name and in the other tab a Map with all the locations.
+        - The app will allow to access previously stored data when internet is not available.
 3. Once the restaurant has been chosen either by 1 or 2. The app will display the food in the menu.
   - For each type of dish there will be a tab (i.e: appetizers, dessert, beverages..) and this tab will contain the list of items in different fragments.
   - All the items in the menu will have pictures and the pictures will be as big as possible. If it is possible the user will be able to navigate between pictures of the same item by dragging horizontally. This will allow the user to navigate through the hole menu without leaving the activity.
