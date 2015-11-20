@@ -20,3 +20,24 @@ Foodaholic allows you to discover great local restaurants by seeing pictures and
 3. Social features (rating, sharing, upload picture).
 4. Add pictures. 
 5. Accept orders and simulated payments.
+
+# Wireframe
+
+## Search restaurant
+This activity will allow to navigate between the different places avalables.
+![Search restaurant](search.png)
+
+## Menu
+This activity will allow to navigate through a restaurant menu.
+![Menu](menu.jpg)
+
+## Detail
+This activity will show the details of one item of the menu.
+![Detail](detail.jpg)
+
+# Inspiration
+![Inspiration](example-search.png)
+![Inspiration](example-detail.png)
+![Inspiration](example-detail2.png)
+
+
