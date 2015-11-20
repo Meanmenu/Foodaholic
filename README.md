@@ -7,6 +7,7 @@ Foodaholic allows you to discover great local restaurants by seeing pictures and
 1. App will push a notification when the app reach a eddystone beacon.
 	- If the user select the notification, the app will display the menu for the restaurant associated with the beacon. We will do this using a Service and Google proximity API.
 	- (Optional) the notification will be automatically dismiss once the app leave the beacon region.
+	- The user must have the option to disable notifications. (Optional) The notifications can be disabled by time intervals.
 2. When the app is executed it will display the closest restaurants in two separated tabs one for the list of restaurants with a picture and name and in the other tab a Map with all the locations.
 3. Once the restaurant has been chosen either by 1 or 2. The app will display the food in the menu.
   - For each type of dish there will be a tab (i.e: appetizers, dessert, beverages..) and this tab will contain the list of items in different fragments.
