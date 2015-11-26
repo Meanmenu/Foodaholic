@@ -23,4 +23,13 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+    // Picasso for remote image loading
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    // Android Async Http for sending async network requests
+    compile 'com.loopj.android:android-async-http:1.4.8'
+    compile 'com.google.android.gms:play-services-maps:8.1.0'
+    compile 'com.google.android.gms:play-services-location:8.1.0'
+
+
 }
