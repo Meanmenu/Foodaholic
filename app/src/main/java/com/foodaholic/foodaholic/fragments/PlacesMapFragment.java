@@ -1,5 +1,6 @@
 package com.foodaholic.foodaholic.fragments;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.IntentSender;
 import android.location.Location;
@@ -83,28 +84,6 @@ public class PlacesMapFragment extends Fragment implements
 
     public PlacesMapFragment() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap map) {
-                    loadMap(map);
-                }
-            });
-        } else {
-            Toast.makeText(getActivity(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
-        }
-
     }
 
     protected void loadMap(GoogleMap googleMap) {
@@ -262,33 +241,51 @@ public class PlacesMapFragment extends Fragment implements
         }
     }
 
-//    /*
-//     * Called when the Activity becomes visible.
-//    */
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        connectClient();
-//    }
-//
-//    /*
-//	 * Called when the Activity is no longer visible.
-//	 */
-//    @Override
-//    protected void onStop() {
-//        // Disconnecting the client invalidates it.
-//        if (mGoogleApiClient != null) {
-//            mGoogleApiClient.disconnect();
-//        }
-//        super.onStop();
-//    }
+    /*
+     * Called when the Activity becomes visible.
+    */
+    @Override
+    public void onStart() {
+        super.onStart();
+        connectClient();
+    }
+
+    /*
+	 * Called when the Activity is no longer visible.
+	 */
+    @Override
+    public void onStop() {
+        // Disconnecting the client invalidates it.
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.disconnect();
+        }
+        super.onStop();
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_places_map, container, false);
+        View v = inflater.inflate(R.layout.fragment_places_map, container, false);
+
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap map) {
+                    loadMap(map);
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
+        }
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -298,22 +295,22 @@ public class PlacesMapFragment extends Fragment implements
         }
     }
 
-//    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
     /**
      * This interface must be implemented by activities that contain this

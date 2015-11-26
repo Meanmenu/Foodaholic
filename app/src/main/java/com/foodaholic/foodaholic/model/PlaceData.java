@@ -1,4 +1,4 @@
-package com.foodaholic.foodaholic;
+package com.foodaholic.foodaholic.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;

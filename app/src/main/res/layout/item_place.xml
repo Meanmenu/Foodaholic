@@ -4,7 +4,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="180dp"
         android:id="@+id/ivPlaceImage"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"

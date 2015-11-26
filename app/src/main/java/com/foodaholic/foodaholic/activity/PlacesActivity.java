@@ -1,21 +1,25 @@
-package com.foodaholic.foodaholic;
+package com.foodaholic.foodaholic.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.foodaholic.foodaholic.model.PlaceData;
+import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.fragments.PlacesListFragment;
 import com.foodaholic.foodaholic.fragments.PlacesMapFragment;
+import com.foodaholic.foodaholic.service.EddystoneScannerService;
 
 import java.util.List;
 
-public class PlacesActivity extends AppCompatActivity {
+public class PlacesActivity extends BaseActivity implements PlacesMapFragment.OnFragmentInteractionListener {
     List<PlaceData> places;
 
     ViewPager viewPager;
@@ -25,12 +29,21 @@ public class PlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
 
+        toolbarCreation();
+
         // Get the viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager) ;
         viewPager.setAdapter(new PlacesPagerAdapter(getSupportFragmentManager()));
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         tabStrip.setViewPager(viewPager);
+
+        Intent serviceIntent = new Intent(this, EddystoneScannerService.class);
+        startService(serviceIntent);
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
 
     }
 

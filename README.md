@@ -1,4 +1,14 @@
 # Foodaholic
+## Video Walkthrough 
+
+Here's a walkthrough of implemented user stories:
+
+![Video Walkthrough](foodaholic.gif)
+
+Some captures of the beacon discovery services pushing notifications:
+
+![Push notification](push1.gif)
+![Push notification](push2.gif)
 
 ## Description
 Foodaholic allows you to discover great local restaurants by seeing pictures and reviews of each item in their menu. Whether you are looking for a place to eat or just want to decide what you are going to order Foodaholic is your app.

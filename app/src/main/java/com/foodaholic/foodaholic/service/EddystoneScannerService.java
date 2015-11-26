@@ -19,8 +19,8 @@ import android.os.ParcelUuid;
 import android.util.ArrayMap;
 import android.util.Log;
 
-import com.foodaholic.foodaholic.MenuActivity;
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.activity.MenuActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,11 +89,11 @@ public class EddystoneScannerService extends Service {
 
         BluetoothManager manager =
                 (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
-        mBluetoothLeScanner = manager.getAdapter().getBluetoothLeScanner();
-
-        mDetectedBeacons = new ArrayMap<>();
-
-        startScanning();
+        if (manager.getAdapter() != null) {
+            mBluetoothLeScanner = manager.getAdapter().getBluetoothLeScanner();
+            mDetectedBeacons = new ArrayMap<>();
+            startScanning();
+        }
     }
 
     @Override
@@ -121,7 +121,7 @@ public class EddystoneScannerService extends Service {
     }
 
     /* Handle user notifications */
-    private void postScanResultNotification(int count) {
+    private void postScanResultNotification() {
 
         Intent contentAction = new Intent(this, MenuActivity.class);
         contentAction.setAction(ACTION_DISMISS);
@@ -132,9 +132,10 @@ public class EddystoneScannerService extends Service {
         PendingIntent delete = PendingIntent.getService(this, -1, deleteAction, 0);
 
         Notification note = new Notification.Builder(this)
-                .setContentTitle("Beacons Detected")
-                .setContentText(String.format("%d New Beacons In Range", count))
-                .setSmallIcon(R.drawable.ic_stat_scan)
+                .setContentTitle("Pearl's Deluxe Burgers")
+                .setContentText("Do you want to see Pearl's Deluxe Burgers menu?")
+                .setSmallIcon(R.drawable.ic_food)
+                .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(content)
                 .setDeleteIntent(delete)
                 .build();
@@ -168,10 +169,7 @@ public class EddystoneScannerService extends Service {
 
         if (!mDetectedBeacons.containsKey(deviceAddress)) {
             mDetectedBeacons.put(deviceAddress, false);
-            int unreadCount = getUnreadCount();
-            //if (unreadCount > 0) {
-                postScanResultNotification(unreadCount);
-            //}
+            postScanResultNotification();
         }
     }
 
@@ -179,15 +177,6 @@ public class EddystoneScannerService extends Service {
         for (String key : mDetectedBeacons.keySet()) {
             mDetectedBeacons.put(key, true);
         }
-    }
-
-    private int getUnreadCount() {
-        int count = 0;
-        for (Boolean marker : mDetectedBeacons.values()) {
-            if (!marker) count++;
-        }
-
-        return count;
     }
 
     /* Process each unique BLE scan result */

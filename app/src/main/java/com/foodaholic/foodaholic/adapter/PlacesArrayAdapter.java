@@ -1,4 +1,4 @@
-package com.foodaholic.foodaholic;
+package com.foodaholic.foodaholic.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.activity.MenuActivity;
+import com.foodaholic.foodaholic.model.PlaceData;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -43,7 +46,7 @@ public class PlacesArrayAdapter extends ArrayAdapter<PlaceData> {
 
         tvPlaceName.setText(place.getName());
         ivPlaceImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(place.getImageUrl()).into(ivPlaceImage);
+        Picasso.with(getContext()).load(Integer.valueOf(place.getImageUrl())).centerCrop().fit().into(ivPlaceImage);
         tvScore.setText("Rating: " + String.valueOf((int)place.getScore()));
 
         ivPlaceImage.setTag(place.getName());
