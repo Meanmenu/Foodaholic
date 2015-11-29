@@ -3,20 +3,26 @@ package com.foodaholic.foodaholic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MenuItem implements Parcelable {
     private String pictureUrlList; //TODO this should be a list
     private String itemName;
     private String reviews; //TODO this should be a complex object
     private String description;
+    private float score;
+    private String cuisine;
 
-    public MenuItem(String pictureUrlList, String itemName, String reviews, String description) {
+    public MenuItem(String pictureUrlList,
+                    String itemName,
+                    String reviews,
+                    String description,
+                    float score,
+                    String cuisine) {
         this.pictureUrlList = pictureUrlList;
         this.itemName = itemName;
         this.reviews = reviews;
         this.description = description;
+        this.score = score;
+        this.cuisine = cuisine;
     }
 
 
@@ -95,4 +101,12 @@ public class MenuItem implements Parcelable {
             return new MenuItem[size];
         }
     };
+
+    public String getScore() {
+        return String.valueOf(score) + "%";
+    }
+
+    public String getCuisine() {
+        return cuisine;
+    }
 }

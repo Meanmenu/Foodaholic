@@ -1,26 +1,18 @@
 package com.foodaholic.foodaholic.activity;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.adapter.MenuItemAdapter;
-import com.foodaholic.foodaholic.mock.MockMenuItem;
-import com.foodaholic.foodaholic.model.MenuItem;
-import com.foodaholic.foodaholic.util.ItemClickSupport;
-
-import java.util.List;
+import com.foodaholic.foodaholic.fragments.menu.FoodTab1Fragment;
+import com.foodaholic.foodaholic.fragments.menu.FoodTab2Fragment;
+import com.foodaholic.foodaholic.fragments.menu.FoodTab3Fragment;
 
 public class MenuActivity extends BaseActivity {
-
-    private MenuItemAdapter adapter;
-    private List<MenuItem> menuItemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,26 +20,44 @@ public class MenuActivity extends BaseActivity {
         setContentView(R.layout.activity_menu);
         toolbarCreation();
 
-        // Retrieving the RecyclerView from the fragment layout
-        RecyclerView rv = (RecyclerView) findViewById(R.id.rv_menu);
-        // Setting a LinearLayoutManager as LayoutManager (Make it look like a ListView)
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        rv.setLayoutManager(linearLayoutManager);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        MenuTypeAdapter adapter = new MenuTypeAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapter);
+        vpPager.setOffscreenPageLimit(3);
 
-        menuItemList = MockMenuItem.menuMock();
-        adapter = new MenuItemAdapter(menuItemList, this);
-        rv.setAdapter(adapter);
-
-        ItemClickSupport.addTo(rv).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-            @Override
-            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent i = new Intent(MenuActivity.this, DetailItemMenuActivity.class);
-                MenuItem item = menuItemList.get(position);
-                i.putExtra("item", item);
-                startActivity(i);
-            }
-        });
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(vpPager);
     }
 
+    public class MenuTypeAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = {"Appetizers", "Salads", "Sandwiches"};
+
+        public MenuTypeAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if ( position == 0) {
+                return new FoodTab1Fragment();
+            } else if (position == 1) {
+                return new FoodTab2Fragment();
+            }  else if (position == 2) {
+                return new FoodTab3Fragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
+    }
 
 }

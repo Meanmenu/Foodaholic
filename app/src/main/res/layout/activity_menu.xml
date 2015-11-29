@@ -8,10 +8,19 @@
         android:id="@+id/app_bar"
         layout="@layout/app_bar" />
 
-    <android.support.v7.widget.RecyclerView
+     <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        app:pstsShouldExpand="true"
+        app:pstsTextAllCaps="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="10dp"
-        android:id="@+id/rv_menu"/>
+        app:pstsIndicatorColor="@color/colorPrimary"
+        android:layout_height="48dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_below="@id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         />
 
 </LinearLayout>

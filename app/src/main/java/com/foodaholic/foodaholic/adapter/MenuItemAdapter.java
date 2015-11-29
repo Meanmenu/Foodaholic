@@ -37,6 +37,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
         final MenuItem menuItem = menuItemList.get(position);
         holder.name.setText(menuItem.getItemName());
         Picasso.with(context).load(Integer.valueOf(menuItem.getPictureUrlList())).centerCrop().fit().into(holder.image);
+        holder.score.setText(menuItem.getScore());
     }
 
     @Override
@@ -52,11 +53,14 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
     public static class MenuItemHolder extends RecyclerView.ViewHolder {
         public TextView name;
         public ImageView image;
+        public TextView score;
+        public TextView cuisine;
 
         private MenuItemHolder(View itemView) {
             super(itemView);
             name = (TextView) itemView.findViewById(R.id.tv_item_menu);
             image = (ImageView) itemView.findViewById(R.id.iv_item_menu);
+            score = (TextView) itemView.findViewById(R.id.tv_score);
         }
 
     }

@@ -1,12 +1,14 @@
 package com.foodaholic.foodaholic.activity;
 
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.model.MenuItem;
-import com.squareup.picasso.Picasso;
+import com.foodaholic.foodaholic.fragments.dummy.DetailsFragment;
 
 /**
  * Created by carlos on 11/25/2015.
@@ -18,12 +20,44 @@ public class DetailItemMenuActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_item_menu);
         toolbarCreation();
-        MenuItem item = getIntent().getExtras().getParcelable("item");
 
-        TextView name = (TextView) findViewById(R.id.tv_item_menu);
-        ImageView picture = (ImageView) findViewById(R.id.iv_item_menu);
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        FoodOptionsAdapter adapter = new FoodOptionsAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapter);
+        vpPager.setOffscreenPageLimit(3);
 
-        name.setText(item.getItemName());
-        Picasso.with(this).load(Integer.valueOf(item.getPictureUrlList())).centerCrop().fit().into(picture);
+        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabStrip.setViewPager(vpPager);
+    }
+
+    public class FoodOptionsAdapter extends FragmentPagerAdapter {
+        private String tabTitles[] = {"Details", "Photos", "Reviews"};
+
+        public FoodOptionsAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if ( position == 0) {
+                return new DetailsFragment();
+            } else if (position == 1) {
+                return new DetailsFragment();
+            }  else if (position == 2) {
+                return new DetailsFragment();
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
+        }
+
+        @Override
+        public int getCount() {
+            return tabTitles.length;
+        }
     }
 }
