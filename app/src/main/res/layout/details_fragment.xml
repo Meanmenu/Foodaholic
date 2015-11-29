@@ -87,6 +87,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_reviews_count"
             android:layout_marginLeft="20dp"
+            android:onClick="handleCommentsClick"
             android:layout_toRightOf="@id/tv_like_count"
             android:drawableLeft="@drawable/comments"
             />
@@ -96,6 +97,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_photos_count"
             android:layout_marginLeft="20dp"
+            android:onClick="handlePhotosClick"
             android:layout_toRightOf="@+id/tv_reviews_count"
             android:drawableLeft="@drawable/camera"
             />
