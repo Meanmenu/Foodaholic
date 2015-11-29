@@ -3,19 +3,21 @@ package com.foodaholic.foodaholic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 public class MenuItem implements Parcelable {
     private String pictureUrlList; //TODO this should be a list
     private String itemName;
-    private String reviews; //TODO this should be a complex object
+    private List<Review> reviews; //TODO this should be a complex object
     private String description;
-    private float score;
+    private double score;
     private String cuisine;
 
     public MenuItem(String pictureUrlList,
                     String itemName,
-                    String reviews,
+                    List<Review> reviews,
                     String description,
-                    float score,
+                    double score,
                     String cuisine) {
         this.pictureUrlList = pictureUrlList;
         this.itemName = itemName;
@@ -42,14 +44,6 @@ public class MenuItem implements Parcelable {
         this.itemName = itemName;
     }
 
-    public String getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(String reviews) {
-        this.reviews = reviews;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -63,7 +57,7 @@ public class MenuItem implements Parcelable {
         return "MenuItem{" +
                 "pictureUrlList='" + pictureUrlList + '\'' +
                 ", itemName='" + itemName + '\'' +
-                ", reviews='" + reviews + '\'' +
+                ", reviews_fragment='" + reviews + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
@@ -78,7 +72,6 @@ public class MenuItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.pictureUrlList);
         dest.writeString(this.itemName);
-        dest.writeString(this.reviews);
         dest.writeString(this.description);
     }
 
@@ -88,7 +81,6 @@ public class MenuItem implements Parcelable {
     private MenuItem(Parcel in) {
         this.pictureUrlList = in.readString();
         this.itemName = in.readString();
-        this.reviews = in.readString();
         this.description = in.readString();
     }
 
@@ -103,7 +95,7 @@ public class MenuItem implements Parcelable {
     };
 
     public String getScore() {
-        return String.valueOf(score) + "%";
+        return String.valueOf(score);
     }
 
     public String getCuisine() {

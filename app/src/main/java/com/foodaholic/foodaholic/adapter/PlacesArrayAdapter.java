@@ -42,7 +42,7 @@ public class PlacesArrayAdapter extends ArrayAdapter<PlaceData> {
 
         ImageView ivPlaceImage = (ImageView) convertView.findViewById(R.id.ivPlaceImage);
         TextView tvPlaceName = (TextView) convertView.findViewById(R.id.tvPlaceName);
-        TextView tvScore = (TextView) convertView.findViewById(R.id.tvScore);
+        TextView tvScore = (TextView) convertView.findViewById(R.id.tvReviewScore);
 
         tvPlaceName.setText(place.getName());
         ivPlaceImage.setImageResource(android.R.color.transparent);

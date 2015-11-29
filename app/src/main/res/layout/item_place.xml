@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Score: 5"
         android:layout_marginRight="10dp"
-        android:id="@+id/tvScore"
+        android:id="@+id/tvReviewScore"
         android:layout_below="@+id/ivPlaceImage"
         android:layout_alignParentEnd="true"
         android:textSize="20sp" />

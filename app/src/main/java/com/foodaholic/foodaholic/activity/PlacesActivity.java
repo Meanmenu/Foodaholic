@@ -59,7 +59,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
             if (position == 0) {
                 return new PlacesListFragment();
             } else if (position == 1) {
-                return new PlacesMapFragment();
+                return new PlacesListFragment();
             }
 
             return null;

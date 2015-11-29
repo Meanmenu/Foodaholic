@@ -28,6 +28,7 @@ dependencies {
     // Picasso for remote image loading
     compile 'com.squareup.picasso:picasso:2.5.2'
     // Android Async Http for sending async network requests
+    compile 'com.makeramen:roundedimageview:2.2.1'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:cardview-v7:23.1.0'
     compile 'com.loopj.android:android-async-http:1.4.8'

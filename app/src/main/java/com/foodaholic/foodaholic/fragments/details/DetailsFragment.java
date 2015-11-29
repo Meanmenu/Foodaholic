@@ -1,4 +1,4 @@
-package com.foodaholic.foodaholic.fragments.dummy;
+package com.foodaholic.foodaholic.fragments.details;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

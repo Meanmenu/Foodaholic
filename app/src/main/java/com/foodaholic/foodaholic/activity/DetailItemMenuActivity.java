@@ -8,7 +8,9 @@ import android.support.v4.view.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.fragments.dummy.DetailsFragment;
+import com.foodaholic.foodaholic.fragments.details.DetailsFragment;
+import com.foodaholic.foodaholic.fragments.details.PhotosFragment;
+import com.foodaholic.foodaholic.fragments.details.ReviewsFragment;
 
 /**
  * Created by carlos on 11/25/2015.
@@ -42,9 +44,9 @@ public class DetailItemMenuActivity extends BaseActivity{
             if ( position == 0) {
                 return new DetailsFragment();
             } else if (position == 1) {
-                return new DetailsFragment();
+                return new PhotosFragment();
             }  else if (position == 2) {
-                return new DetailsFragment();
+                return new ReviewsFragment();
             } else {
                 return null;
             }
