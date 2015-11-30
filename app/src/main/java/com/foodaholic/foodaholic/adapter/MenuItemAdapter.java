@@ -1,5 +1,6 @@
 package com.foodaholic.foodaholic.adapter;
 
+import android.net.Uri;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,8 +37,9 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
     public void onBindViewHolder(MenuItemHolder holder, int position) {
         final MenuItem menuItem = menuItemList.get(position);
         holder.name.setText(menuItem.getItemName());
-        Picasso.with(context).load(Integer.valueOf(menuItem.getPictureUrlList())).centerCrop().fit().into(holder.image);
+        Picasso.with(context).load(Uri.parse(menuItem.getPictureUrlList())).centerCrop().fit().into(holder.image);
         holder.score.setText(menuItem.getScore());
+        holder.score.setBackgroundColor(context.getResources().getColor(menuItem.getColorForScore()));
     }
 
     @Override
