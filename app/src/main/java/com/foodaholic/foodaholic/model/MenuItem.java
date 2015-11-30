@@ -2,7 +2,6 @@ package com.foodaholic.foodaholic.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.foodaholic.foodaholic.R;
 

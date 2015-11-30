@@ -35,7 +35,7 @@ public class DetailsFragment extends Fragment {
 
         name.setText(item.getItemName());
         score.setText(item.getScore());
-        score.setBackgroundColor(item.getColorForScore());
+        score.setBackgroundColor(getResources().getColor(item.getColorForScore()));
         likesCount.setText("30");
         reviewsCount.setText("10");
         photosCount.setText("5");
