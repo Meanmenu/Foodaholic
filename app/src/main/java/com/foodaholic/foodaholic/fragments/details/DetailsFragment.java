@@ -1,5 +1,6 @@
 package com.foodaholic.foodaholic.fragments.details;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -34,11 +35,16 @@ public class DetailsFragment extends Fragment {
 
         name.setText(item.getItemName());
         score.setText(item.getScore());
+        score.setBackgroundColor(getResources().getColor(item.getColorForScore()));
         likesCount.setText("30");
         reviewsCount.setText("10");
         photosCount.setText("5");
 
+<<<<<<< HEAD
         Picasso.with(this.getActivity()).load(Integer.valueOf(item.getPictureUrlList())).centerCrop().fit().into(picture);
+=======
+        Picasso.with(this.getContext()).load(Uri.parse(item.getPictureUrlList())).centerCrop().fit().into(picture);
+>>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
 
         return v;
     }

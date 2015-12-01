@@ -13,4 +13,5 @@
     <color name="dark_green">#006400</color>
     <color name="light_green">#98fb98</color>
     <color name="green">#00CC00</color>
+    <color name="partial_black">#20000000</color>
 </resources>

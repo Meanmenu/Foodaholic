@@ -5,18 +5,14 @@
     >
 
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/ivUser"
         android:scaleType="fitCenter"
-        app:riv_corner_radius="10dip"
-        app:riv_border_width="0dip"
-        app:riv_mutate_background="true"
         android:layout_marginTop="10dp"
-        app:riv_tile_mode="repeat"
-        app:riv_oval="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -46,8 +42,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewScore"
         android:text="New text"
+<<<<<<< HEAD
         android:textColor="@android:color/white"
         android:padding="5dp"
+=======
+        android:textColor="@color/white"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+>>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
         android:layout_below="@+id/tvReviewUsername"
         android:layout_toRightOf="@+id/ivUser"
         android:layout_toEndOf="@+id/ivUser" />

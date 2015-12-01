@@ -3,6 +3,8 @@ package com.foodaholic.foodaholic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.foodaholic.foodaholic.R;
+
 import java.util.List;
 
 public class MenuItem implements Parcelable {
@@ -73,6 +75,7 @@ public class MenuItem implements Parcelable {
         dest.writeString(this.pictureUrlList);
         dest.writeString(this.itemName);
         dest.writeString(this.description);
+        dest.writeDouble(this.score);
     }
 
     public MenuItem() {
@@ -82,6 +85,7 @@ public class MenuItem implements Parcelable {
         this.pictureUrlList = in.readString();
         this.itemName = in.readString();
         this.description = in.readString();
+        this.score = in.readDouble();
     }
 
     public static final Parcelable.Creator<MenuItem> CREATOR = new Parcelable.Creator<MenuItem>() {
@@ -100,5 +104,15 @@ public class MenuItem implements Parcelable {
 
     public String getCuisine() {
         return cuisine;
+    }
+
+    public int getColorForScore() {
+        if( score >= 4.0 ) {
+            return R.color.dark_green;
+        } else if( score >= 3.0 ) {
+            return R.color.green;
+        }
+
+        return R.color.orange;
     }
 }

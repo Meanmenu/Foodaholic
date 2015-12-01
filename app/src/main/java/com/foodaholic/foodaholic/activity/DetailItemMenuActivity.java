@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+<<<<<<< HEAD
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +16,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.Toast;
+=======
+import android.view.View;
+>>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.bumptech.glide.Glide;
@@ -29,6 +33,8 @@ public class DetailItemMenuActivity extends AppCompatActivity {
 
     public static final String EXTRA_NAME = "cheese_name";
 
+    private ViewPager vpPager;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +46,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final String cheeseName = intent.getStringExtra(EXTRA_NAME);
 
+<<<<<<< HEAD
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -49,6 +56,9 @@ public class DetailItemMenuActivity extends AppCompatActivity {
         collapsingToolbar.setTitle(cheeseName);
 
         final ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+=======
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
+>>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
         FoodOptionsAdapter adapter = new FoodOptionsAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapter);
         vpPager.setOffscreenPageLimit(3);
@@ -104,6 +114,14 @@ public class DetailItemMenuActivity extends AppCompatActivity {
 //                    public void onPageScrollStateChanged(int state) {
 //                    }
 //                });
+    }
+
+    public void handlePhotosClick(View view) {
+        vpPager.setCurrentItem(1);
+    }
+
+    public void handleCommentsClick(View view) {
+        vpPager.setCurrentItem(2);
     }
 
     public class FoodOptionsAdapter extends FragmentPagerAdapter {

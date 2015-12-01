@@ -28,6 +28,8 @@
         android:padding="5dp"
         android:layout_marginTop="-30dp"
         android:layout_marginRight="2dp"
+        android:minWidth="50dp"
+        android:textAlignment="center"
         android:text="Score" android:background="@color/colorPrimary"
         android:id="@+id/tv_score"
         android:layout_below="@id/iv_item_menu"
@@ -87,6 +89,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_reviews_count"
             android:layout_marginLeft="20dp"
+            android:onClick="handleCommentsClick"
             android:layout_toRightOf="@id/tv_like_count"
             android:drawableLeft="@drawable/comments"
             />
@@ -96,6 +99,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_photos_count"
             android:layout_marginLeft="20dp"
+            android:onClick="handlePhotosClick"
             android:layout_toRightOf="@+id/tv_reviews_count"
             android:drawableLeft="@drawable/camera"
             />
