@@ -34,7 +34,7 @@ public abstract class FoodFragment extends Fragment {
         // Retrieving the RecyclerView from the fragment layout
         RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv_menu);
         // Setting a LinearLayoutManager as LayoutManager (Make it look like a ListView)
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         rv.setLayoutManager(linearLayoutManager);
 
         menuItemList = getMenuItemList();

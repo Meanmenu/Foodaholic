@@ -38,7 +38,7 @@ public class DetailsFragment extends Fragment {
         reviewsCount.setText("10");
         photosCount.setText("5");
 
-        Picasso.with(this.getContext()).load(Integer.valueOf(item.getPictureUrlList())).centerCrop().fit().into(picture);
+        Picasso.with(this.getActivity()).load(Integer.valueOf(item.getPictureUrlList())).centerCrop().fit().into(picture);
 
         return v;
     }

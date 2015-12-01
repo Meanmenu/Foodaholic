@@ -25,7 +25,7 @@ public class PhotosFragment extends Fragment {
         View v = inflater.inflate(R.layout.photos_fragment, container, false);
 
         gridView = (GridView) v.findViewById(R.id.gv_photos);
-        gridView.setAdapter(new PhotoAdapter(this.getContext()));
+        gridView.setAdapter(new PhotoAdapter(this.getActivity()));
 
         setUpOnClickListener();
 

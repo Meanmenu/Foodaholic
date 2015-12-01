@@ -29,7 +29,7 @@ public class ReviewsFragment extends Fragment {
 
         lvReviews = (ListView) v.findViewById(R.id.lvReviews);
         reviews = MockReviewList.getList();
-        adapter = new ReviewAdapter(this.getContext(), reviews);
+        adapter = new ReviewAdapter(this.getActivity(), reviews);
         lvReviews.setAdapter(adapter);
 
         return v;
