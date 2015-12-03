@@ -27,5 +27,5 @@ public class ImagesAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return item.getPictureUrlList().size();
     }
-    
+
 }
