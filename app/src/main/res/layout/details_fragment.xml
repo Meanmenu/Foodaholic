@@ -3,20 +3,12 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_item_menu"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:scaleType="centerCrop"
-        />
-
     <TextView
         android:id="@+id/tv_item_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
         android:textSize="25sp"
-        android:layout_below="@id/iv_item_menu"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"/>
 
@@ -24,7 +16,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:padding="5dp"
         android:layout_marginTop="-30dp"
         android:layout_marginRight="2dp"
@@ -32,14 +24,13 @@
         android:textAlignment="center"
         android:text="Score" android:background="@color/colorPrimary"
         android:id="@+id/tv_score"
-        android:layout_below="@id/iv_item_menu"
         android:layout_alignParentRight="true"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:layout_marginLeft="2dp"
         android:padding="5dp"
         android:text="$5.64" android:background="@color/colorPrimary"
@@ -47,7 +38,6 @@
         android:layout_marginTop="-30dp"
         android:layout_alignParentLeft="true"
         android:layout_marginRight="5dp"
-        android:layout_below="@id/iv_item_menu"
         />
 
     <TextView

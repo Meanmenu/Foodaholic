@@ -56,7 +56,7 @@ public class PhotoFullViewActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_photo_full_view, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
         // Fetch reference to the share action provider
-        miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+       // miShareAction = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         setupShareIntent();
         return true;
     }

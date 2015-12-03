@@ -1,76 +1,112 @@
 package com.foodaholic.foodaholic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.fragments.details.DetailsFragment;
-import com.foodaholic.foodaholic.fragments.details.PhotosFragment;
-import com.foodaholic.foodaholic.fragments.details.ReviewsFragment;
+import com.foodaholic.foodaholic.adapter.FoodOptionsAdapter;
+import com.foodaholic.foodaholic.adapter.ImagesAdapter;
+import com.foodaholic.foodaholic.model.MenuItemData;
+import com.viewpagerindicator.CirclePageIndicator;
 
-/**
- * Created by carlos on 11/25/2015.
- */
-public class DetailItemMenuActivity extends BaseActivity{
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-    private ViewPager vpPager;
+public class DetailItemMenuActivity extends AppCompatActivity {
+    public static final String ITEM = "item";
+
+    @Bind(R.id.viewpager) ViewPager vpPager;
+    @Bind(R.id.nest_scrollview) NestedScrollView scrollView;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.indicator) CirclePageIndicator mIndicator;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_item_menu);
-        toolbarCreation();
+        ButterKnife.bind(this);
 
-        vpPager = (ViewPager) findViewById(R.id.viewpager);
-        FoodOptionsAdapter adapter = new FoodOptionsAdapter(getSupportFragmentManager());
-        vpPager.setAdapter(adapter);
-        vpPager.setOffscreenPageLimit(3);
-
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(vpPager);
+        MenuItemData item = getIntent().getExtras().getParcelable(ITEM);
+        setActionBar(item);
+        setToolbarImages(item);
+        setTabs();
     }
 
-    public void handlePhotosClick(View view) {
-        vpPager.setCurrentItem(1);
+    private void setToolbarImages(MenuItemData item) {
+        ImagesAdapter mAdapter = new ImagesAdapter(getSupportFragmentManager(), item);
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mIndicator.setViewPager(mPager);
+        mIndicator.setSnap(true);
+    }
+
+    private void setTabs() {
+        scrollView.setFillViewport (true); // Needed to have tabs
+
+        FoodOptionsAdapter adapter = new FoodOptionsAdapter(getSupportFragmentManager());
+        vpPager.setAdapter(adapter);
+        vpPager.setOffscreenPageLimit(2);
+
+        tabLayout.addTab(tabLayout.newTab().setText("Details"));
+        tabLayout.addTab(tabLayout.newTab().setText("Reviews"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
+    private void setActionBar(MenuItemData item) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(item.getItemName());
+        getSupportActionBar().setElevation(0);
     }
 
     public void handleCommentsClick(View view) {
-        vpPager.setCurrentItem(2);
+        vpPager.setCurrentItem(1);
     }
 
-    public class FoodOptionsAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Details", "Photos", "Reviews"};
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
+    }
 
-        public FoodOptionsAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if ( position == 0) {
-                return new DetailsFragment();
-            } else if (position == 1) {
-                return new PhotosFragment();
-            }  else if (position == 2) {
-                return new ReviewsFragment();
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getCount() {
-            return tabTitles.length;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_gallery:
+                Intent i = new Intent(this, GalleryActivity.class);
+                startActivity(i);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

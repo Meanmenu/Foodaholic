@@ -42,9 +42,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewScore"
         android:text="New text"
-        android:textColor="@color/white"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:textColor="@android:color/white"
+        android:padding="5dp"
         android:layout_below="@+id/tvReviewUsername"
         android:layout_toRightOf="@+id/ivUser"
         android:layout_toEndOf="@+id/ivUser" />
