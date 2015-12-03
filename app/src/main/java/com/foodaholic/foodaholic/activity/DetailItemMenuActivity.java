@@ -2,70 +2,61 @@ package com.foodaholic.foodaholic.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-<<<<<<< HEAD
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.Toast;
-=======
+import android.view.MenuItem;
 import android.view.View;
->>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
 
-import com.astuetz.PagerSlidingTabStrip;
-import com.bumptech.glide.Glide;
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.adapter.FoodOptionsAdapter;
 import com.foodaholic.foodaholic.adapter.ImagesAdapter;
-import com.foodaholic.foodaholic.fragments.details.DetailsFragment;
-import com.foodaholic.foodaholic.fragments.details.PhotosFragment;
-import com.foodaholic.foodaholic.fragments.details.ReviewsFragment;
-import com.squareup.picasso.Picasso;
+import com.foodaholic.foodaholic.model.MenuItemData;
+import com.viewpagerindicator.CirclePageIndicator;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class DetailItemMenuActivity extends AppCompatActivity {
+    public static final String ITEM = "item";
 
-    public static final String EXTRA_NAME = "cheese_name";
-
-    private ViewPager vpPager;
+    @Bind(R.id.viewpager) ViewPager vpPager;
+    @Bind(R.id.nest_scrollview) NestedScrollView scrollView;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.indicator) CirclePageIndicator mIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_detail);
+        setContentView(R.layout.activity_detail_item_menu);
+        ButterKnife.bind(this);
 
-        NestedScrollView scrollView = (NestedScrollView) findViewById (R.id.nest_scrollview);
-        scrollView.setFillViewport (true);
+        MenuItemData item = getIntent().getExtras().getParcelable(ITEM);
+        setActionBar(item);
+        setToolbarImages(item);
+        setTabs();
+    }
 
-        Intent intent = getIntent();
-        final String cheeseName = intent.getStringExtra(EXTRA_NAME);
+    private void setToolbarImages(MenuItemData item) {
+        ImagesAdapter mAdapter = new ImagesAdapter(getSupportFragmentManager(), item);
+        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
+        mPager.setAdapter(mAdapter);
+        mIndicator.setViewPager(mPager);
+        mIndicator.setSnap(true);
+    }
 
-<<<<<<< HEAD
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    private void setTabs() {
+        scrollView.setFillViewport (true); // Needed to have tabs
 
-        CollapsingToolbarLayout collapsingToolbar =
-                (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbar.setTitle(cheeseName);
-
-        final ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
-=======
-        vpPager = (ViewPager) findViewById(R.id.viewpager);
->>>>>>> d80d9d1b4b94a828a3540275e0401ad48e8df51f
         FoodOptionsAdapter adapter = new FoodOptionsAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapter);
-        vpPager.setOffscreenPageLimit(3);
+        vpPager.setOffscreenPageLimit(2);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("Details"));
-        tabLayout.addTab(tabLayout.newTab().setText("Photos"));
         tabLayout.addTab(tabLayout.newTab().setText("Reviews"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -85,80 +76,37 @@ public class DetailItemMenuActivity extends AppCompatActivity {
 
             }
         });
-
-
-        ImagesAdapter mAdapter = new ImagesAdapter(getSupportFragmentManager());
-
-        ViewPager mPager = (ViewPager) findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-
-//        CirclePageIndicator mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
-//        mIndicator.setViewPager(mPager);
-//        ((CirclePageIndicator) mIndicator).setSnap(true);
-//
-//        mIndicator
-//                .setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//                    @Override
-//                    public void onPageSelected(int position) {
-//                        Toast.makeText(DetailItemMenuActivity.this,
-//                                "Changed to page " + position,
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                    @Override
-//                    public void onPageScrolled(int position,
-//                                               float positionOffset, int positionOffsetPixels) {
-//                    }
-//
-//                    @Override
-//                    public void onPageScrollStateChanged(int state) {
-//                    }
-//                });
     }
 
-    public void handlePhotosClick(View view) {
-        vpPager.setCurrentItem(1);
+    private void setActionBar(MenuItemData item) {
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(item.getItemName());
+        getSupportActionBar().setElevation(0);
     }
 
     public void handleCommentsClick(View view) {
-        vpPager.setCurrentItem(2);
+        vpPager.setCurrentItem(1);
     }
-
-    public class FoodOptionsAdapter extends FragmentPagerAdapter {
-        private String tabTitles[] = {"Details", "Photos", "Reviews"};
-
-        public FoodOptionsAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            if ( position == 0) {
-                Log.i("DetailsFragment", "DetailsFragment");
-                return new DetailsFragment();
-            } else if (position == 1) {
-                return new PhotosFragment();
-            }  else if (position == 2) {
-                return new ReviewsFragment();
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
-        }
-
-        @Override
-        public int getCount() {
-            return tabTitles.length;
-        }
-    }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_gallery:
+                Intent i = new Intent(this, GalleryActivity.class);
+                startActivity(i);
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

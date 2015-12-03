@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.activity.DetailItemMenuActivity;
 import com.foodaholic.foodaholic.adapter.MenuItemAdapter;
-import com.foodaholic.foodaholic.model.MenuItem;
+import com.foodaholic.foodaholic.model.MenuItemData;
 import com.foodaholic.foodaholic.util.ItemClickSupport;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 public abstract class FoodFragment extends Fragment {
 
     private MenuItemAdapter adapter;
-    private List<MenuItem> menuItemList;
+    private List<MenuItemData> menuItemList;
 
     @Nullable
     @Override
@@ -45,7 +45,7 @@ public abstract class FoodFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Intent i = new Intent(getActivity(), DetailItemMenuActivity.class);
-                MenuItem item = menuItemList.get(position);
+                MenuItemData item = menuItemList.get(position);
                 i.putExtra("item", item);
                 startActivity(i);
             }
@@ -53,5 +53,5 @@ public abstract class FoodFragment extends Fragment {
         return v;
     }
 
-    protected abstract List<MenuItem> getMenuItemList();
+    protected abstract List<MenuItemData> getMenuItemList();
 }

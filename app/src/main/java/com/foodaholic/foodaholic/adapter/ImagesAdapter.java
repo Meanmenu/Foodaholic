@@ -5,33 +5,27 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.fragments.DetailFragment;
+import com.foodaholic.foodaholic.fragments.ImageFragment;
+import com.foodaholic.foodaholic.model.MenuItemData;
 
 /**
  * Created by carlos on 11/30/2015.
  */
 public class ImagesAdapter extends FragmentPagerAdapter {
-
-    private int[] images = new int[] { R.drawable.pearl_deluxe_burguer, R.drawable.teriyaki_burguer};
-    private int mCount = images.length;
-    public ImagesAdapter(FragmentManager fm) {
+    private MenuItemData item;
+    public ImagesAdapter(FragmentManager fm, MenuItemData item) {
         super(fm);
+        this.item = item;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return DetailFragment.newInstance(images[position]);
+        return ImageFragment.newInstance(item.getPictureUrlList().get(position));
     }
 
     @Override
     public int getCount() {
-        return mCount;
+        return item.getPictureUrlList().size();
     }
-
-    public void setCount(int count) {
-        if (count > 0 && count <= 10) {
-            mCount = count;
-            notifyDataSetChanged();
-        }
-    }
+    
 }

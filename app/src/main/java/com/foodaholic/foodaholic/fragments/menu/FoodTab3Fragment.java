@@ -1,7 +1,7 @@
 package com.foodaholic.foodaholic.fragments.menu;
 
 import com.foodaholic.foodaholic.mock.MockMenuItem;
-import com.foodaholic.foodaholic.model.MenuItem;
+import com.foodaholic.foodaholic.model.MenuItemData;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
 public class FoodTab3Fragment extends FoodFragment {
 
     @Override
-    protected List<MenuItem> getMenuItemList() {
+    protected List<MenuItemData> getMenuItemList() {
         return MockMenuItem.menuMock3();
     }
 }

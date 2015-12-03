@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.model.MenuItem;
+import com.foodaholic.foodaholic.model.MenuItemData;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -19,10 +19,10 @@ import java.util.List;
 
 public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuItemHolder>{
 
-    private List<MenuItem> menuItemList;
+    private List<MenuItemData> menuItemList;
     private FragmentActivity context;
 
-    public MenuItemAdapter(List<MenuItem> menuItemList, FragmentActivity context) {
+    public MenuItemAdapter(List<MenuItemData> menuItemList, FragmentActivity context) {
         this.context = context;
         this.menuItemList = menuItemList;
     }
@@ -35,9 +35,9 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
 
     @Override
     public void onBindViewHolder(MenuItemHolder holder, int position) {
-        final MenuItem menuItem = menuItemList.get(position);
+        final MenuItemData menuItem = menuItemList.get(position);
         holder.name.setText(menuItem.getItemName());
-        Picasso.with(context).load(Uri.parse(menuItem.getPictureUrlList())).centerCrop().fit().into(holder.image);
+        Picasso.with(context).load(Uri.parse(menuItem.getPictureUrlList().get(0))).centerCrop().fit().into(holder.image);
         holder.score.setText(menuItem.getScore());
         holder.score.setBackgroundColor(context.getResources().getColor(menuItem.getColorForScore()));
     }
