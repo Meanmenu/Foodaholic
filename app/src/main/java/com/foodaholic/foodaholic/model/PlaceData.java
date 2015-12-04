@@ -95,7 +95,7 @@ public class PlaceData implements Serializable{
         try {
             place.name = json.getString("name");
             place.score = json.getDouble("rating");
-            place.imageUrl = json.getString("image_url");
+            place.imageUrl = json.getString("image_url").replace("ms.jpg", "l.jpg");
             place.description = json.getString("snippet_text");
             JSONObject location = json.getJSONObject("location");
             JSONObject coordinate = location.getJSONObject("coordinate");

@@ -82,7 +82,7 @@ public class YelpAPI {
     }
 
     public String searchByCoordinate(String term, double latitude, double longitude) {
-        OAuthRequest request = new OAuthRequest(Verb.GET, "http://api.yelp.com/v2/search");
+        OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", term);
         request.addQuerystringParameter("ll", latitude + "," + longitude);
         return sendRequestAndGetResponse(request);
