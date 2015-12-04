@@ -1,6 +1,7 @@
 package com.foodaholic.foodaholic.activity;
 
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,18 +12,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.astuetz.PagerSlidingTabStrip;
-import com.foodaholic.foodaholic.model.PlaceData;
 import com.foodaholic.foodaholic.R;
-import com.foodaholic.foodaholic.fragments.PlacesListFragment;
-import com.foodaholic.foodaholic.fragments.PlacesMapFragment;
+import com.foodaholic.foodaholic.client.YelpAPI;
+import com.foodaholic.foodaholic.fragments.places.PlacesListFragment;
+import com.foodaholic.foodaholic.fragments.places.PlacesMapFragment;
+import com.foodaholic.foodaholic.model.PlaceData;
 import com.foodaholic.foodaholic.service.EddystoneScannerService;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class PlacesActivity extends BaseActivity implements PlacesMapFragment.OnFragmentInteractionListener {
-    List<PlaceData> places;
+    ArrayList<PlaceData> places;
 
     ViewPager viewPager;
+
+    double lat;
+    double lon;
+    String location;
+    LocationManager mLocationManager;
+
+    String url = "https://api.yelp.com/v2/search/?term=food&ll=37.77493,-122.419415";
+    YelpAPI yelpApi;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +44,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         toolbarCreation();
 
         // Get the viewPager
-        viewPager = (ViewPager) findViewById(R.id.viewpager) ;
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PlacesPagerAdapter(getSupportFragmentManager()));
 
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -40,6 +52,13 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
 
         Intent serviceIntent = new Intent(this, EddystoneScannerService.class);
         startService(serviceIntent);
+
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+//        String name = makeFragmentName(viewPager.getId(), 0);
+//        PlacesListFragment fragment = (PlacesListFragment) getSupportFragmentManager().findFragmentByTag(name);
+//        fragment.places = this.places;
+
     }
 
     @Override
@@ -59,7 +78,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
             if (position == 0) {
                 return new PlacesListFragment();
             } else if (position == 1) {
-                return new PlacesListFragment();
+                return new PlacesMapFragment();
             }
 
             return null;
@@ -74,6 +93,10 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         public int getCount() {
             return tabTitles.length;
         }
+    }
+
+    private static String makeFragmentName(int viewId, int position) {
+        return "android:switcher:" + viewId + ":" + position;
     }
 
     @Override

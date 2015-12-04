@@ -1,4 +1,4 @@
-package com.foodaholic.foodaholic.fragments;
+package com.foodaholic.foodaholic.fragments.places;
 
 import android.app.Activity;
 import android.app.Dialog;

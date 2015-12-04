@@ -1,5 +1,6 @@
-package com.foodaholic.foodaholic.fragments;
+package com.foodaholic.foodaholic.fragments.places;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.foodaholic.foodaholic.model.PlaceData;
-import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
+import com.foodaholic.foodaholic.client.YelpAPI;
+import com.foodaholic.foodaholic.model.PlaceData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -22,20 +28,21 @@ import java.util.ArrayList;
  * interface.
  */
 public class PlacesListFragment extends Fragment {
-    protected ArrayList<PlaceData> places;
+    public ArrayList<PlaceData> places;
     public PlacesArrayAdapter aPlaces;
     protected ListView lvPlaces;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "places";
+    private static final String ARG_PARAM2 = "adapter";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private YelpAPI yelpApi;
 
     @Nullable
     @Override
@@ -75,24 +82,49 @@ public class PlacesListFragment extends Fragment {
         }
 
         places = new ArrayList<>();
-        PlaceData placeA = new PlaceData();
-        placeA.setName("Pearl's Deluxe");
-        placeA.setScore(5.0f);
-        placeA.setImageUrl(R.drawable.pearl_deluxe+"");
-        PlaceData placeB = new PlaceData();
-        placeB.setName("PlaceB");
-        placeB.setScore(1.0f);
-        placeB.setImageUrl(R.drawable.farmtable + "");
-        places.add(placeA);
+//        PlaceData placeA = new PlaceData();
+//        placeA.setName("Pearl's Deluxe");
+//        placeA.setScore(5.0f);
+//        placeA.setImageUrl(R.drawable.pearl_deluxe + "");
+//        PlaceData placeB = new PlaceData();
+//        placeB.setName("PlaceB");
+//        placeB.setScore(1.0f);
+//        placeB.setImageUrl(R.drawable.farmtable + "");
+//        places.add(placeA);
 //        places.add(placeB);
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... params) {
+                YelpAPI yelp = YelpAPI.getYelpClient();
+                // TODO: get current location and call yelp.searchByCoordinate
+                String businesses = yelp.searchByLocation("food", "seattle");
+                try {
+                    return processJson(businesses);
+                } catch (JSONException e) {
+                    return businesses;
+                }
+            }
 
-        // TODO: Change Adapter to display your content
-        //setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-        //        android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS));
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                aPlaces.notifyDataSetChanged();
+
+            }
+        }.execute();
+
+
     }
 
+    String processJson(String jsonStuff) throws JSONException {
+        JSONObject json = new JSONObject(jsonStuff);
+        JSONArray businesses = json.getJSONArray("businesses");
+        places.clear();
+        places.addAll(PlaceData.fromJsonArray(businesses));
+        return String.valueOf(json.getInt("total"));
+    }
 
 //    @Override
 //    public void onAttach(Activity activity) {
