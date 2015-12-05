@@ -81,8 +81,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     private void setActionBar(MenuItemData item) {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(item.getItemName());
-        getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("  " + item.getItemName());
     }
 
     public void handleCommentsClick(View view) {

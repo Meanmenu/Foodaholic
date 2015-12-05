@@ -61,14 +61,4 @@ public class Review implements Serializable {
     public void setDate(String date) {
         this.date = date;
     }
-
-    public int getColorForScore() {
-        if( score >= 4.0 ) {
-            return R.color.dark_green;
-        } else if( score >= 3.0 ) {
-            return R.color.green;
-        }
-
-        return R.color.orange;
-    }
 }

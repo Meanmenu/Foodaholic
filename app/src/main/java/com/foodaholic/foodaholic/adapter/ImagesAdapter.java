@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.fragments.ImageFragment;
 import com.foodaholic.foodaholic.model.MenuItemData;
 

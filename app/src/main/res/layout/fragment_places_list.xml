@@ -5,6 +5,7 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lvPlaces" />
+        android:id="@+id/lvPlaces"
+        android:paddingBottom="15dp"/>
 
 </LinearLayout>

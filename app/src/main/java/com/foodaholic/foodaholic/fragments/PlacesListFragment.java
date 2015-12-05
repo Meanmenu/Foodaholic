@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.foodaholic.foodaholic.model.PlaceData;
-import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
+import com.foodaholic.foodaholic.model.PlaceData;
 
 import java.util.ArrayList;
 
@@ -78,7 +78,7 @@ public class PlacesListFragment extends Fragment {
         PlaceData placeA = new PlaceData();
         placeA.setName("Pearl's Deluxe");
         placeA.setScore(5.0f);
-        placeA.setImageUrl(R.drawable.pearl_deluxe+"");
+        placeA.setImageUrl(R.drawable.fries+"");
         PlaceData placeB = new PlaceData();
         placeB.setName("PlaceB");
         placeB.setScore(1.0f);

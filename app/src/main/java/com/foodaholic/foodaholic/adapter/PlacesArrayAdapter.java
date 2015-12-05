@@ -47,7 +47,7 @@ public class PlacesArrayAdapter extends ArrayAdapter<PlaceData> {
         tvPlaceName.setText(place.getName());
         ivPlaceImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(Integer.valueOf(place.getImageUrl())).centerCrop().fit().into(ivPlaceImage);
-        tvScore.setText("Rating: " + String.valueOf((int)place.getScore()));
+        tvScore.setText(String.valueOf(" "+String.format("%.1f", place.getScore())+" "));
 
         ivPlaceImage.setTag(place.getName());
 

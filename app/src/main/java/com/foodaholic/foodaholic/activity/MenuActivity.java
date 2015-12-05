@@ -1,32 +1,56 @@
 package com.foodaholic.foodaholic.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab1Fragment;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab2Fragment;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab3Fragment;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class MenuActivity extends BaseActivity {
+
+    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.viewpager) ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        toolbarCreation();
+        ButterKnife.bind(this);
 
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        toolbarCreation();
+        getSupportActionBar().setTitle("Pearl's Deluxe"); //TODO Update this dynamically
+        ButterKnife.bind(this);
+
         MenuTypeAdapter adapter = new MenuTypeAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapter);
         vpPager.setOffscreenPageLimit(3);
 
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(vpPager);
+        tabLayout.addTab(tabLayout.newTab().setText("Appetizers"));
+        tabLayout.addTab(tabLayout.newTab().setText("Salads"));
+        tabLayout.addTab(tabLayout.newTab().setText("Sandwiches"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                vpPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
+        });
     }
 
     public class MenuTypeAdapter extends FragmentPagerAdapter {

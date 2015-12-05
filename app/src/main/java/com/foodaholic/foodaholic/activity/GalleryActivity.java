@@ -20,7 +20,7 @@ public class GalleryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
         toolbarCreation();
-
+        getSupportActionBar().setTitle("Photos");
         gridView = (GridView) findViewById(R.id.gv_photos);
         gridView.setAdapter(new PhotoAdapter(this));
 
