@@ -3,7 +3,7 @@
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](foodaholic.gif)
+![Video Walkthrough](foodaholic_v1.gif)
 
 Some captures of the beacon discovery services pushing notifications:
 
