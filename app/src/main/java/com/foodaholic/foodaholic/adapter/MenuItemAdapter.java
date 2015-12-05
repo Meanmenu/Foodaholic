@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.model.MenuItemData;
 import com.squareup.picasso.Picasso;
@@ -38,8 +37,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
         final MenuItemData menuItem = menuItemList.get(position);
         holder.name.setText(menuItem.getItemName());
         Picasso.with(context).load(Uri.parse(menuItem.getPictureUrlList().get(0))).centerCrop().fit().into(holder.image);
-        holder.score.setText(menuItem.getScore());
-        holder.score.setBackgroundColor(context.getResources().getColor(menuItem.getColorForScore()));
+        holder.score.setText(" "+menuItem.getScore()+" ");
     }
 
     @Override

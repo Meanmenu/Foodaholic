@@ -11,8 +11,8 @@ import android.widget.ListView;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
-import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.model.PlaceData;
+import com.foodaholic.foodaholic.client.YelpAPI;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -82,16 +82,15 @@ public class PlacesListFragment extends Fragment {
         }
 
         places = new ArrayList<>();
-//        PlaceData placeA = new PlaceData();
-//        placeA.setName("Pearl's Deluxe");
-//        placeA.setScore(5.0f);
-//        placeA.setImageUrl(R.drawable.pearl_deluxe + "");
-//        PlaceData placeB = new PlaceData();
-//        placeB.setName("PlaceB");
-//        placeB.setScore(1.0f);
-//        placeB.setImageUrl(R.drawable.farmtable + "");
-//        places.add(placeA);
-//        places.add(placeB);
+        PlaceData placeA = new PlaceData();
+        placeA.setName("Pearl's Deluxe");
+        placeA.setScore(5.0f);
+        placeA.setImageUrl(R.drawable.fries+"");
+        PlaceData placeB = new PlaceData();
+        placeB.setName("PlaceB");
+        placeB.setScore(1.0f);
+        placeB.setImageUrl(R.drawable.farmtable + "");
+        places.add(placeA);
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
         new AsyncTask<Void, Void, String>() {

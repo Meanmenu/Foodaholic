@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.fragments.places.PlacesListFragment;
@@ -21,10 +21,14 @@ import com.foodaholic.foodaholic.service.EddystoneScannerService;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 public class PlacesActivity extends BaseActivity implements PlacesMapFragment.OnFragmentInteractionListener {
     ArrayList<PlaceData> places;
 
-    ViewPager viewPager;
+    @Bind(R.id.viewpager) ViewPager viewPager;
+    @Bind(R.id.tabs) TabLayout tabLayout;
 
     double lat;
     double lon;
@@ -34,21 +38,40 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
     String url = "https://api.yelp.com/v2/search/?term=food&ll=37.77493,-122.419415";
     YelpAPI yelpApi;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
+        ButterKnife.bind(this);
 
         toolbarCreation();
+        getSupportActionBar().setTitle(R.string.app_name);
 
         // Get the viewPager
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new PlacesPagerAdapter(getSupportFragmentManager()));
+        viewPager.setOffscreenPageLimit(2);
 
-        PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        tabStrip.setViewPager(viewPager);
+        tabLayout.addTab(tabLayout.newTab().setText("PLACES"));
+        tabLayout.addTab(tabLayout.newTab().setText("MAP"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         Intent serviceIntent = new Intent(this, EddystoneScannerService.class);
         startService(serviceIntent);
@@ -113,10 +136,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //noinspection SimplifiableIfStatemen
 
         return super.onOptionsItemSelected(item);
     }

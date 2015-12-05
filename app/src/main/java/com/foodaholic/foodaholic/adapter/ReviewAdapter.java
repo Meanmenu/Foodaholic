@@ -56,7 +56,6 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         viewHolder.reviewBody.setText(review.getBody());
         viewHolder.reviewDate.setText(review.getDate());
         viewHolder.reviewScore.setText(String.valueOf(review.getScore()));
-        viewHolder.reviewScore.setBackgroundColor(getContext().getResources().getColor(review.getColorForScore()));
         viewHolder.reviewUsername.setText(review.getUsername());
 
         viewHolder.reviewUserImageUrl.setImageResource(android.R.color.transparent);

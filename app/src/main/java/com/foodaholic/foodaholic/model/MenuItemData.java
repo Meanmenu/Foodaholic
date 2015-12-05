@@ -63,16 +63,6 @@ public class MenuItemData implements Parcelable {
         return cuisine;
     }
 
-    public int getColorForScore() {
-        if( score >= 4.0 ) {
-            return R.color.dark_green;
-        } else if( score >= 3.0 ) {
-            return R.color.green;
-        }
-
-        return R.color.orange;
-    }
-
     @Override
     public String toString() {
         return "MenuItemData{" +
