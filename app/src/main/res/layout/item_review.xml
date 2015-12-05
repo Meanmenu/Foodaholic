@@ -44,6 +44,7 @@
         android:text="New text"
         android:textColor="@android:color/white"
         android:padding="5dp"
+        android:background="@color/colorPrimaryDark"
         android:layout_below="@+id/tvReviewUsername"
         android:layout_toRightOf="@+id/ivUser"
         android:layout_toEndOf="@+id/ivUser" />
