@@ -6,7 +6,9 @@
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/lvReviews">
+        android:id="@+id/lvReviews"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1px">
     </ListView>
 
 </LinearLayout>

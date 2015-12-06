@@ -4,15 +4,14 @@
     android:paddingBottom="10dp"
     >
 
-
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:id="@+id/ivUser"
-        android:scaleType="fitCenter"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="20dp"
+        android:src="@android:mipmap/sym_def_app_icon"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -20,9 +19,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewUsername"
-        android:text="New text"
-        android:textColor="@color/colorPrimaryDark"
+        android:text="User Name"
+        android:textSize="17sp"
+        android:textColor="@color/primaryText"
         android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-medium"
         android:layout_toRightOf="@+id/ivUser"
         />
 
@@ -30,32 +31,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewDate"
-        android:text="New text"
-         android:layout_marginRight="10dp"
+         android:textSize="16sp"
+        android:text="Date"
+        android:layout_marginRight="20dp"
+        android:fontFamily="sans-serif-medium"
         android:textColor="@android:color/darker_gray"
         android:layout_alignParentRight="true"
-         android:layout_marginTop="10dp"
+        android:layout_marginTop="10dp"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewScore"
-        android:text="New text"
-        android:textColor="@android:color/white"
-        android:padding="5dp"
-        android:background="@color/colorPrimaryDark"
-        android:layout_below="@+id/tvReviewUsername"
-        android:layout_toRightOf="@+id/ivUser"
-        android:layout_toEndOf="@+id/ivUser" />
+        android:text="2.1"
+        android:textColor="@color/gold"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:padding="7dp"
+        android:fontFamily="sans-serif-medium"
+        android:background="@drawable/gold_rectangle"
+        android:layout_below="@+id/tvReviewDate"
+        android:layout_alignEnd="@+id/tvReviewDate" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tvReviewBody"
-        android:text="New text"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/tvReviewScore"
+        android:text="Description"
+        android:textColor="@android:color/darker_gray"
+        android:fontFamily="sans-serif-medium"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp"
+        android:layout_below="@+id/tvReviewUsername"
         android:layout_toRightOf="@+id/ivUser"
         android:layout_toEndOf="@+id/ivUser" />
 
