@@ -35,18 +35,20 @@
         android:layout_height="wrap_content"
         android:text="Ingredients"
         android:textStyle="bold"
+        android:layout_alignLeft="@+id/tv_price"
         android:layout_marginTop="10dp"
         android:id="@+id/tv_ingredients_label"
         android:layout_below="@+id/tv_price"
-        android:layout_alignStart="@+id/tv_item_menu" />
+         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Wheat, Onino, Tomatio, Cheese"
+        android:layout_alignLeft="@+id/tv_price"
         android:id="@+id/tv_ingredients"
         android:layout_below="@+id/tv_ingredients_label"
-        android:layout_alignStart="@+id/tv_item_menu" />
+         />
 
     <RelativeLayout
         android:layout_width="match_parent"

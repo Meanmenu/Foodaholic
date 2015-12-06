@@ -1,11 +1,10 @@
 package com.foodaholic.foodaholic.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,50 +17,69 @@ import java.util.List;
 /**
  * Created by maygupta on 11/29/15.
  */
-public class ReviewAdapter extends ArrayAdapter<Review> {
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
 
-    // View lookup cache
-    private static class ViewHolder {
+    private List<Review> mReviews;
+    private Context mContext;
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // Your holder should contain a member variable
+        // for any view that will be set as you render a row
         TextView reviewBody;
         ImageView reviewUserImageUrl;
         TextView reviewDate;
         TextView reviewScore;
         TextView reviewUsername;
+        // We also create a constructor that accepts the entire item row
+        // and does the view lookups to find each subview
+        public ViewHolder(View itemView) {
+            // Stores the itemView in a public final member variable that can be used
+            // to access the context from any ViewHolder instance.
+            super(itemView);
+
+            reviewBody = (TextView) itemView.findViewById(R.id.tvReviewBody);
+            reviewDate = (TextView) itemView.findViewById(R.id.tvReviewDate);
+            reviewScore = (TextView) itemView.findViewById(R.id.tvReviewScore);
+            reviewUsername = (TextView) itemView.findViewById(R.id.tvReviewUsername);
+            reviewUserImageUrl = (ImageView) itemView.findViewById(R.id.ivUser);
+        }
     }
 
-    public ReviewAdapter(Context context, List<Review> objects) {
-        super(context, 0, objects);
+        // Pass in the contact array into the constructor
+    public ReviewAdapter(List<Review> reviews,
+                         Context context) {
+        this.mReviews = reviews;
+        this.mContext = context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
 
-        ViewHolder viewHolder; // view lookup cache stored in tag
-        Review review = getItem(position);
+        // Inflate the custom layout
+        View contactView = inflater.inflate(R.layout.item_review, parent, false);
 
-        if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_review, parent, false);
+        // Return a new holder instance
+        ViewHolder viewHolder = new ViewHolder(contactView);
+        return viewHolder;
+    }
 
-            viewHolder.reviewBody = (TextView) convertView.findViewById(R.id.tvReviewBody);
-            viewHolder.reviewDate = (TextView) convertView.findViewById(R.id.tvReviewDate);
-            viewHolder.reviewScore = (TextView) convertView.findViewById(R.id.tvReviewScore);
-            viewHolder.reviewUsername = (TextView) convertView.findViewById(R.id.tvReviewUsername);
-            viewHolder.reviewUserImageUrl = (ImageView) convertView.findViewById(R.id.ivUser);
-
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        Review review = mReviews.get(position);
         viewHolder.reviewBody.setText(review.getBody());
         viewHolder.reviewDate.setText(review.getDate());
         viewHolder.reviewScore.setText(String.valueOf(review.getScore()));
         viewHolder.reviewUsername.setText(review.getUsername());
 
         viewHolder.reviewUserImageUrl.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(review.getUserImageUrl()).into(viewHolder.reviewUserImageUrl);
-
-        return convertView;
+        Picasso.with(mContext).load(review.getUserImageUrl()).into(viewHolder.reviewUserImageUrl);
     }
+
+    @Override
+    public int getItemCount() {
+        return mReviews.size();
+    }
+
 }
