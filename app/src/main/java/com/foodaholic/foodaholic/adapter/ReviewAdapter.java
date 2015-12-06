@@ -70,7 +70,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         Review review = mReviews.get(position);
         viewHolder.reviewBody.setText(review.getBody());
         viewHolder.reviewDate.setText(review.getDate());
-        viewHolder.reviewScore.setText(String.valueOf(review.getScore()));
+        viewHolder.reviewScore.setText(" "+String.valueOf(review.getScore())+" ");
         viewHolder.reviewUsername.setText(review.getUsername());
 
         viewHolder.reviewUserImageUrl.setImageResource(android.R.color.transparent);
