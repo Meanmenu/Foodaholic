@@ -1,13 +1,15 @@
 package com.foodaholic.foodaholic.model;
 
-import com.foodaholic.foodaholic.R;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
 
 import java.io.Serializable;
 
 /**
  * Created by maygupta on 11/29/15.
  */
-public class Review implements Serializable {
+@ParseClassName("Review")
+public class Review extends ParseObject implements Serializable {
     private double score;
     private String username;
     private String userImageUrl;
@@ -20,6 +22,20 @@ public class Review implements Serializable {
         this.userImageUrl = userImageUrl;
         this.date = date;
         this.body = body;
+        put("score", score);
+        put("username", username);
+        put("userImageUrl", userImageUrl);
+        put("body", body);
+    }
+
+    public Review(){}
+
+    public Review(ParseObject object) {
+        this.score = Double.parseDouble(object.getString("score"));
+        this.userImageUrl = object.getString("userImageUrl");
+        this.body = object.getString("body");
+        this.username = object.getString("username");
+        this.date = object.getString("date");
     }
 
     public String getBody() {
