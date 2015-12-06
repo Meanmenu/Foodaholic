@@ -4,6 +4,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by maygupta on 11/29/15.
@@ -26,6 +28,8 @@ public class Review extends ParseObject implements Serializable {
         put("username", username);
         put("userImageUrl", userImageUrl);
         put("body", body);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        put("date", sdf.format(new Date()));
     }
 
     public Review(){}
