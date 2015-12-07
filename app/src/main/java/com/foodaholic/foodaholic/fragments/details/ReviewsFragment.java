@@ -1,11 +1,14 @@
 package com.foodaholic.foodaholic.fragments.details;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.ReviewAdapter;
@@ -25,25 +28,49 @@ public class ReviewsFragment extends Fragment {
 
     ReviewAdapter adapter;
     List<Review> reviews;
-    ListView lvReviews;
+    RecyclerView lvReviews;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.reviews_fragment, container, false);
-
-        lvReviews = (ListView) v.findViewById(R.id.lvReviews);
-        loadReviews();
-        adapter = new ReviewAdapter(this.getActivity(), reviews);
+        reviews = new ArrayList<>();
+        lvReviews = (RecyclerView) v.findViewById(R.id.lvReviews);
+        adapter = new ReviewAdapter(reviews, this.getContext());
+        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        lvReviews.setLayoutManager(llm);
         lvReviews.setAdapter(adapter);
 
+        FloatingActionButton button = (FloatingActionButton) v.findViewById(R.id.float_btn);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddReviewFragment(v);
+            }
+        });
+
+        loadReviews();
         return v;
     }
 
+    public void showAddReviewFragment(View view) {
+        FragmentManager fm = getActivity().getFragmentManager();
+        AddReviewFragment fragment = AddReviewFragment.newInstance();
+        fragment.setListener(new AddReviewListener() {
+            @Override
+            public void finish(Review r) {
+                addReview(r);
+            }
+        });
+        fragment.show(fm, "add_review");
+    }
+
     private void loadReviews() {
-        reviews = new ArrayList<>();
+
         ParseQuery<Review> query = ParseQuery.getQuery(Review.class);
         // TODO: This should be actual food_item_id
         query.whereEqualTo("food_item_id", "1");
+        query.addDescendingOrder("date");
         query.findInBackground(new FindCallback<Review>() {
             @Override
             public void done(List<Review> objects, ParseException e) {
@@ -54,6 +81,15 @@ public class ReviewsFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public void addReview(Review r) {
+        reviews.add(0,r);
+        adapter.notifyDataSetChanged();;
+    }
+
+    public interface AddReviewListener {
+        public void finish(Review r);
     }
 
 }

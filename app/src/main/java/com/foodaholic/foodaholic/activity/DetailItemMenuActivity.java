@@ -87,6 +87,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     public void handleCommentsClick(View view) {
         vpPager.setCurrentItem(1);
     }
+    public void handlePhotosClick(View view) { vpPager.setCurrentItem(0);}
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
