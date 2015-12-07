@@ -8,6 +8,7 @@ import android.widget.GridView;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.PhotoAdapter;
+import com.foodaholic.foodaholic.model.MenuItemData;
 
 /**
  * Created by carlos on 12/1/2015.
@@ -21,8 +22,10 @@ public class GalleryActivity extends BaseActivity {
         setContentView(R.layout.activity_gallery);
         toolbarCreation();
         getSupportActionBar().setTitle("Photos");
+
+        MenuItemData item = getIntent().getExtras().getParcelable("item");
         gridView = (GridView) findViewById(R.id.gv_photos);
-        gridView.setAdapter(new PhotoAdapter(this));
+        gridView.setAdapter(new PhotoAdapter(this, item.getPictureUrlList()));
 
         setUpOnClickListener();
     }

@@ -27,6 +27,17 @@ public class DetailsFragment extends Fragment {
         TextView likesCount = (TextView) v.findViewById(R.id.tv_like_count);
         TextView reviewsCount = (TextView) v.findViewById(R.id.tv_reviews_count);
         TextView photosCount = (TextView) v.findViewById(R.id.tv_photos_count);
+        TextView type = (TextView) v.findViewById(R.id.tv_type);
+
+        String typeText = item.getType();
+        type.setText(typeText);
+        if (typeText.equals("Vegetarian")) {
+            type.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+        } else if (typeText.equals("Non Vegetarian")) {
+            type.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+        } else if (typeText.equals("Vegan")) {
+            type.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+        }
 
         score.setText(item.getScore());
         likesCount.setText("30");
