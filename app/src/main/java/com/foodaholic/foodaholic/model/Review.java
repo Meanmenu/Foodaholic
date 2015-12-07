@@ -1,7 +1,11 @@
 package com.foodaholic.foodaholic.model;
 
+import android.util.Log;
+
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -24,12 +28,21 @@ public class Review extends ParseObject implements Serializable {
         this.userImageUrl = userImageUrl;
         this.date = date;
         this.body = body;
-        put("score", score);
+        put("score", String.valueOf(score));
         put("username", username);
         put("userImageUrl", userImageUrl);
         put("body", body);
+        put("food_item_id", "1");
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         put("date", sdf.format(new Date()));
+        saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.d("ERROR", e.getMessage().toString());
+                }
+            }
+        });
     }
 
     public Review(){}
