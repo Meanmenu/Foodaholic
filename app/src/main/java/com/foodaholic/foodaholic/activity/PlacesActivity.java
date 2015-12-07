@@ -203,7 +203,8 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return PlacesListFragment.newInstance("food", lat, lon);
+                // TODO: use configurable variable for name and radius
+                return PlacesListFragment.newInstance("food", lat, lon, 1000);
             } else if (position == 1) {
                 return new PlacesMapFragment();
             }

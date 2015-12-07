@@ -81,10 +81,12 @@ public class YelpAPI {
         return sendRequestAndGetResponse(request);
     }
 
-    public String searchByCoordinate(String term, double latitude, double longitude) {
+    public String searchByCoordinate(String term, double latitude, double longitude, long radius) {
         OAuthRequest request = createOAuthRequest(SEARCH_PATH);
         request.addQuerystringParameter("term", term);
+        request.addQuerystringParameter("category_filter", "restaurants");
         request.addQuerystringParameter("ll", latitude + "," + longitude);
+        request.addQuerystringParameter("radius_filter", String.valueOf(radius));
         return sendRequestAndGetResponse(request);
     }
 
