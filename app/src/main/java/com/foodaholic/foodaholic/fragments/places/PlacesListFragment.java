@@ -103,8 +103,6 @@ public class PlacesListFragment extends Fragment {
 
             }
         }.execute();
-
-
     }
 
     String processJson(String jsonStuff) throws JSONException {

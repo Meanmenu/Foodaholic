@@ -1,22 +1,39 @@
 package com.foodaholic.foodaholic.activity;
 
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.FoodOptionsAdapter;
 import com.foodaholic.foodaholic.adapter.ImagesAdapter;
+import com.foodaholic.foodaholic.fragments.details.AddReviewFragment;
+import com.foodaholic.foodaholic.fragments.details.ReviewsFragment;
 import com.foodaholic.foodaholic.model.MenuItemData;
+import com.foodaholic.foodaholic.model.Review;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,6 +42,9 @@ import butterknife.OnClick;
 public class DetailItemMenuActivity extends AppCompatActivity {
     public static final String ITEM = "item";
     public static final String REVIEWS = "Reviews";
+    public static final String USERNAME = "username";
+    public static final String ID = "id";
+    public static final String PICTURE = "picture";
 
     @Bind(R.id.viewpager) ViewPager vpPager;
     @Bind(R.id.nest_scrollview) NestedScrollView scrollView;
@@ -33,6 +53,9 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     @Bind(R.id.indicator) CirclePageIndicator mIndicator;
     @Bind(R.id.float_btn) FloatingActionButton fab;
     private FoodOptionsAdapter adapter;
+    private CallbackManager callbackManager;
+    private static Profile profile;
+    private ProfileTracker mProfileTracker;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,23 +69,78 @@ public class DetailItemMenuActivity extends AppCompatActivity {
         setTabs();
     }
 
-    @OnClick(R.id.float_btn)
-    public void submit(View view) {
-        showAddReviewFragment(view);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
+            return;
+        }
     }
 
+    @OnClick(R.id.float_btn)
     public void showAddReviewFragment(View view) {
-        Intent i = new Intent(this, FacebookLoginActivity.class);
-        startActivity(i);
-//        FragmentManager fm = getFragmentManager();
-//        AddReviewFragment fragment = AddReviewFragment.newInstance();
-//        fragment.setListener(new ReviewsFragment.AddReviewListener() {
-//            @Override
-//            public void finish(Review r) {
-//                adapter.addReview(r);
-//            }
-//        });
-//        fragment.show(fm, "add_review");
+        final SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(DetailItemMenuActivity.this);
+
+        if(mSettings.getString(ID, null) != null){
+            startReviw();
+        }else {
+            callbackManager = CallbackManager.Factory.create();
+            LoginManager mLoginMgr = LoginManager.getInstance();
+
+            FacebookCallback<LoginResult> mFacebookCallback =
+                    new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            if (Profile.getCurrentProfile() == null) {
+                                mProfileTracker = new ProfileTracker() {
+                                    @Override
+                                    protected void onCurrentProfileChanged(Profile profile, Profile profile2) {
+                                        SharedPreferences.Editor editor = mSettings.edit();
+                                        editor.putString(USERNAME, profile2.getFirstName() + " " + profile2.getLastName());
+                                        editor.putString(ID, profile2.getId());
+                                        editor.commit();
+                                        mProfileTracker.stopTracking();
+                                        startReviw();
+                                    }
+                                };
+                                mProfileTracker.startTracking();
+                            } else {
+                                Profile profile = Profile.getCurrentProfile();
+                                SharedPreferences.Editor editor = mSettings.edit();
+                                editor.putString(USERNAME, profile.getFirstName() + " " + profile.getLastName());
+                                editor.putString(ID, profile.getId());
+                                editor.commit();
+                                startReviw();
+                            }
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            // App code
+                        }
+
+                        @Override
+                        public void onError(FacebookException exception) {
+                            // App code
+                        }
+                    };
+
+            List<String> mPermissions = Arrays.asList("public_profile, email, user_birthday, user_friends");
+            mLoginMgr.registerCallback(callbackManager, mFacebookCallback);
+            mLoginMgr.logInWithReadPermissions(this, mPermissions);
+        }
+    }
+
+    private void startReviw() {
+        FragmentManager fm = getFragmentManager();
+        AddReviewFragment fragment = AddReviewFragment.newInstance();
+        fragment.setListener(new ReviewsFragment.AddReviewListener() {
+            @Override
+            public void finish(Review r) {
+                adapter.addReview(r);
+            }
+        });
+        fragment.show(fm, "add_review");
     }
 
     private void setToolbarImages(MenuItemData item) {

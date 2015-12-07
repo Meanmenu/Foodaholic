@@ -2,11 +2,14 @@ package com.foodaholic.foodaholic.fragments.details;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +21,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.activity.DetailItemMenuActivity;
 import com.foodaholic.foodaholic.model.Review;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -35,7 +40,7 @@ public class AddReviewFragment extends DialogFragment {
     EditText etReviewText;
     ReviewsFragment.AddReviewListener listener;
     EditText review;
-    @Bind(R.id.iv_user) ImageView profileImage;
+    ImageView profileImage;
 
     private int curLength = 0;
     private RatingBar rbScore;
@@ -59,10 +64,12 @@ public class AddReviewFragment extends DialogFragment {
 
     @OnClick(R.id.bt_send)
     public void send(View view) {
+        final SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String id = mSettings.getString(DetailItemMenuActivity.ID, null);
         Review r = new Review(rbScore.getRating(),
-                "Mayank Gupta",
-                "https://scontent.fsnc1-1.fna.fbcdn.net/hprofile-xaf1/v/t1.0-1/p320x320/10968305_1015878085092410_4103411558902970210_n.jpg?oh=3dde591786d08d0df13110ff536a47e1&oe=56F59D55",
+                mSettings.getString(DetailItemMenuActivity.USERNAME, null),
+                "https://graph.facebook.com/"+id+"/picture",
                 sdf.format(new Date()),
                 etReviewText.getText().toString());
         listener.finish(r);
@@ -92,6 +99,11 @@ public class AddReviewFragment extends DialogFragment {
                 send(v);
             }
         });
+        profileImage = (ImageView) view.findViewById(R.id.iv_user);
+
+        final SharedPreferences mSettings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String id = mSettings.getString(DetailItemMenuActivity.ID, null);
+        Picasso.with(getActivity()).load("https://graph.facebook.com/"+id+"/picture").into(profileImage);
 
         final ImageView close = (ImageView) view.findViewById(R.id.iv_close);
 
