@@ -131,6 +131,8 @@ public class DetailItemMenuActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_gallery:
                 Intent i = new Intent(this, GalleryActivity.class);
+
+                i.putExtra("item", getIntent().getExtras().getParcelable(ITEM));
                 startActivity(i);
                 return true;
             case android.R.id.home:
