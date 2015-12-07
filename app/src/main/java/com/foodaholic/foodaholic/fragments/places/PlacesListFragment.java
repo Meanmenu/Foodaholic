@@ -28,7 +28,7 @@ import java.util.ArrayList;
  * interface.
  */
 public class PlacesListFragment extends Fragment {
-    public ArrayList<PlaceData> places;
+    public ArrayList<PlaceData> places = new ArrayList<>();
     public PlacesArrayAdapter aPlaces;
     protected ListView lvPlaces;
 
@@ -81,16 +81,6 @@ public class PlacesListFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        places = new ArrayList<>();
-        PlaceData placeA = new PlaceData();
-        placeA.setName("Pearl's Deluxe");
-        placeA.setScore(5.0f);
-        placeA.setImageUrl(R.drawable.fries+"");
-        PlaceData placeB = new PlaceData();
-        placeB.setName("PlaceB");
-        placeB.setScore(1.0f);
-        placeB.setImageUrl(R.drawable.farmtable + "");
-        places.add(placeA);
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
         new AsyncTask<Void, Void, String>() {

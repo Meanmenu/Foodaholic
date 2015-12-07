@@ -1,11 +1,13 @@
 package com.foodaholic.foodaholic.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab1Fragment;
@@ -27,6 +29,8 @@ public class MenuActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         toolbarCreation();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setTitle("Pearl's Deluxe"); //TODO Update this dynamically
         ButterKnife.bind(this);
 
@@ -81,6 +85,17 @@ public class MenuActivity extends BaseActivity {
         @Override
         public int getCount() {
             return tabTitles.length;
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
