@@ -93,7 +93,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
                 if(tab.getText().equals(REVIEWS)){
                     fab.setVisibility(View.VISIBLE);
                 }else{
-                    fab.setVisibility(View.VISIBLE);
+                    fab.setVisibility(View.GONE);
                 }
             }
 
