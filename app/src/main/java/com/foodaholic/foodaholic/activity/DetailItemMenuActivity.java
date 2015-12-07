@@ -1,6 +1,5 @@
 package com.foodaholic.foodaholic.activity;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,10 +15,7 @@ import android.view.View;
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.FoodOptionsAdapter;
 import com.foodaholic.foodaholic.adapter.ImagesAdapter;
-import com.foodaholic.foodaholic.fragments.details.AddReviewFragment;
-import com.foodaholic.foodaholic.fragments.details.ReviewsFragment;
 import com.foodaholic.foodaholic.model.MenuItemData;
-import com.foodaholic.foodaholic.model.Review;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.Bind;
@@ -56,15 +52,17 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     }
 
     public void showAddReviewFragment(View view) {
-        FragmentManager fm = getFragmentManager();
-        AddReviewFragment fragment = AddReviewFragment.newInstance();
-        fragment.setListener(new ReviewsFragment.AddReviewListener() {
-            @Override
-            public void finish(Review r) {
-                adapter.addReview(r);
-            }
-        });
-        fragment.show(fm, "add_review");
+        Intent i = new Intent(this, FacebookLoginActivity.class);
+        startActivity(i);
+//        FragmentManager fm = getFragmentManager();
+//        AddReviewFragment fragment = AddReviewFragment.newInstance();
+//        fragment.setListener(new ReviewsFragment.AddReviewListener() {
+//            @Override
+//            public void finish(Review r) {
+//                adapter.addReview(r);
+//            }
+//        });
+//        fragment.show(fm, "add_review");
     }
 
     private void setToolbarImages(MenuItemData item) {

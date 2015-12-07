@@ -2,6 +2,7 @@ package com.foodaholic.foodaholic;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.foodaholic.foodaholic.model.Review;
 import com.parse.Parse;
 import com.parse.ParseObject;
@@ -20,5 +21,6 @@ public class FoodMenuApplication extends Application {
         ParseObject.registerSubclass(Review.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }

@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
@@ -42,6 +43,13 @@
         <activity android:name=".activity.DetailItemMenuActivity" />
         <activity android:name=".activity.PhotoFullViewActivity"/>GalleryActivity
         <activity android:name=".activity.GalleryActivity"/>
+        <activity android:name="com.foodaholic.foodaholic.activity.FacebookLoginActivity">
+        </activity>
+        <activity android:name="com.facebook.FacebookActivity"
+          android:configChanges=
+                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+          android:theme="@android:style/Theme.Translucent.NoTitleBar"
+          android:label="@string/app_name" />
     </application>
 
 </manifest>
