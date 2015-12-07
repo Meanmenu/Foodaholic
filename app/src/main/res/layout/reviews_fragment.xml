@@ -13,17 +13,4 @@
         android:dividerHeight="1px">
     </android.support.v7.widget.RecyclerView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:src="@drawable/ic_plus"
-        app:layout_behavior="com.foodaholic.foodaholic.util.ScrollAwareFABBehavior"
-        app:fabSize="normal"
-        android:id="@+id/float_btn"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="bottom|right|end"
-        android:layout_width="wrap_content"
-        android:baselineAlignBottom="true"
-        android:onClick="showAddReviewFragment"
-        android:layout_height="wrap_content" />
-
 </FrameLayout>

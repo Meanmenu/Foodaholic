@@ -26,7 +26,7 @@ public class AddReviewFragment extends DialogFragment {
     RatingBar rbScore;
     ReviewsFragment.AddReviewListener listener;
 
-     static AddReviewFragment newInstance() {
+     public static AddReviewFragment newInstance() {
         AddReviewFragment f = new AddReviewFragment();
         return f;
     }

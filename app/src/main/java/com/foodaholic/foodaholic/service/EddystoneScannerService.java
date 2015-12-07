@@ -14,6 +14,7 @@ import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -26,6 +27,8 @@ import com.foodaholic.foodaholic.activity.MenuActivity;
 import com.foodaholic.foodaholic.model.PlaceData;
 import com.foodaholic.foodaholic.util.BeaconLookUp;
 import com.google.common.base.Optional;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -129,50 +132,53 @@ public class EddystoneScannerService extends Service {
     }
 
     /* Handle user notifications */
-    private void postScanResultNotification(PlaceData place) {
-        Bitmap remote_picture = null;
-
-        // Create the style object with BigPictureStyle subclass.
-        Notification notiStyle = new
-                Notification.BigPictureStyle().setAutoCancel(false)
-                .setOngoing(true);
-        notiStyle.setBigContentTitle("Pearl's Deluxe Burgers");
-        notiStyle.setSummaryText("Do you want to see the menu?");
-
-
-        remote_picture = BitmapFactory.decodeResource(getResources(),
-                R.drawable.pearl_deluxe_burguer);
-
-
-        // Add the big picture to the style.
-        notiStyle.bigPicture(remote_picture);
-
+    private void postScanResultNotification(final PlaceData place) {
         Intent contentAction = new Intent(this, MenuActivity.class);
         contentAction.setAction(ACTION_DISMISS);
-        PendingIntent content = PendingIntent.getActivity(this, -1, contentAction, 0);
+        final PendingIntent content = PendingIntent.getActivity(this, -1, contentAction, 0);
 
         Intent deleteAction = new Intent(this, EddystoneScannerService.class);
         deleteAction.setAction(ACTION_DISMISS);
         PendingIntent delete = PendingIntent.getService(this, -1, deleteAction, 0);
 
-        Notification note = new Notification.Builder(this)
-                .setContentTitle("Pearl's Deluxe Burgers")
-                .setContentText("Do you want to see the menu?")
-                .setSmallIcon(R.drawable.ic_food)
-                .setColor(getResources().getColor(R.color.colorPrimary))
-                .setContentIntent(content)
-                .setAutoCancel(false)
-                .setOngoing(true)
-                .setStyle(notiStyle)
-                .build();
+        Picasso.with(this).load(place.getImageUrl()).into(new Target() {
+            // Fires when Picasso finishes loading the bitmap for the target
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Notification.Builder builder = new Notification.Builder(EddystoneScannerService.this)
+                        .setContentTitle(place.getName())
+                        .setContentText("Do you want to see the menu?")
+                        .setSmallIcon(R.drawable.ic_food)
+                        .setColor(getResources().getColor(R.color.colorPrimary))
+                        .setContentIntent(content)
+                        .setAutoCancel(false)
+                        .setOngoing(true);
 
-        mNotificationManager.notify(NOTIFICATION_ID, notiStyle);
+                Notification notification = new Notification.BigPictureStyle(builder)
+                        .bigPicture(bitmap).build();
+
+                mNotificationManager.notify(NOTIFICATION_ID, notification);
+            }
+
+            // Fires if bitmap fails to load
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+
+
     }
 
     /* Begin scanning for Eddystone advertisers */
     private void startScanning() {
         //Run in background mode
-        ScanSettings settings = neew ScanSettings.Builder()
+        ScanSettings settings = new ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .build();
 

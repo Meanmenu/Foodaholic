@@ -41,29 +41,11 @@ public class ReviewsFragment extends Fragment {
         lvReviews.setLayoutManager(llm);
         lvReviews.setAdapter(adapter);
 
-        FloatingActionButton button = (FloatingActionButton) v.findViewById(R.id.float_btn);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAddReviewFragment(v);
-            }
-        });
-
         loadReviews();
         return v;
     }
 
-    public void showAddReviewFragment(View view) {
-        FragmentManager fm = getActivity().getFragmentManager();
-        AddReviewFragment fragment = AddReviewFragment.newInstance();
-        fragment.setListener(new AddReviewListener() {
-            @Override
-            public void finish(Review r) {
-                addReview(r);
-            }
-        });
-        fragment.show(fm, "add_review");
-    }
+
 
     private void loadReviews() {
 
