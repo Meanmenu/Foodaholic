@@ -12,6 +12,8 @@ import android.bluetooth.le.ScanRecord;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -21,7 +23,13 @@ import android.util.Log;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.activity.MenuActivity;
+import com.foodaholic.foodaholic.model.PlaceData;
+import com.foodaholic.foodaholic.util.BeaconLookUp;
+import com.google.common.base.Optional;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,7 +129,23 @@ public class EddystoneScannerService extends Service {
     }
 
     /* Handle user notifications */
-    private void postScanResultNotification() {
+    private void postScanResultNotification(PlaceData place) {
+        Bitmap remote_picture = null;
+
+        // Create the style object with BigPictureStyle subclass.
+        Notification notiStyle = new
+                Notification.BigPictureStyle().setAutoCancel(false)
+                .setOngoing(true);
+        notiStyle.setBigContentTitle("Pearl's Deluxe Burgers");
+        notiStyle.setSummaryText("Do you want to see the menu?");
+
+
+        remote_picture = BitmapFactory.decodeResource(getResources(),
+                R.drawable.pearl_deluxe_burguer);
+
+
+        // Add the big picture to the style.
+        notiStyle.bigPicture(remote_picture);
 
         Intent contentAction = new Intent(this, MenuActivity.class);
         contentAction.setAction(ACTION_DISMISS);
@@ -133,20 +157,22 @@ public class EddystoneScannerService extends Service {
 
         Notification note = new Notification.Builder(this)
                 .setContentTitle("Pearl's Deluxe Burgers")
-                .setContentText("Do you want to see Pearl's Deluxe Burgers menu?")
+                .setContentText("Do you want to see the menu?")
                 .setSmallIcon(R.drawable.ic_food)
                 .setColor(getResources().getColor(R.color.colorPrimary))
                 .setContentIntent(content)
-                .setDeleteIntent(delete)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setStyle(notiStyle)
                 .build();
 
-        mNotificationManager.notify(NOTIFICATION_ID, note);
+        mNotificationManager.notify(NOTIFICATION_ID, notiStyle);
     }
 
     /* Begin scanning for Eddystone advertisers */
     private void startScanning() {
         //Run in background mode
-        ScanSettings settings = new ScanSettings.Builder()
+        ScanSettings settings = neew ScanSettings.Builder()
                 .setScanMode(ScanSettings.SCAN_MODE_LOW_POWER)
                 .build();
 
@@ -162,14 +188,17 @@ public class EddystoneScannerService extends Service {
 
     /* Handle UID packet discovery on the main thread */
     private void processUidPacket(String deviceAddress, int rssi, byte[] packet) {
+        String id = getNamespaceIdFromScan(packet);
         if (DEBUG_SCAN) {
-            String id = getNamespaceIdFromScan(packet);
             Log.d(TAG, "Eddystone(" + deviceAddress + ") id = " + id);
         }
 
         if (!mDetectedBeacons.containsKey(deviceAddress)) {
-            mDetectedBeacons.put(deviceAddress, false);
-            postScanResultNotification();
+            Optional<PlaceData> place = BeaconLookUp.getPlaceInformationFromBeacon(id);
+            if(place.isPresent()) {
+                mDetectedBeacons.put(deviceAddress, false);
+                postScanResultNotification(place.get());
+            }
         }
     }
 

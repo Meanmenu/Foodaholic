@@ -12,7 +12,9 @@ public class BeaconLookUp {
         PlaceData place = new PlaceData();
         switch (id){
             case "f7826da6bc5b71e0893e":
-//                place.setImageUrl();
+                place.setName("Pearl's Deluxe");
+                place.setImageUrl("http://s3-media4.fl.yelpcdn.com/bphoto/mLfBCMDKXahEsT9hfw7nug/l.jpg");
+                return Optional.of(place);
             default:
                 return Optional.absent();
         }
