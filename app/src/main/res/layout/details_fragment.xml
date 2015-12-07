@@ -7,6 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:transitionName="score"
         android:text="5.0"
         android:layout_marginRight="15dp"
         android:id="@+id/tv_score"
@@ -23,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorPrimary"
+        android:transitionName="food"
         android:fontFamily="sans-serif-medium"
         android:layout_margin="15dp"
         android:text="$5.64"
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:text="Ingredients"
         android:textStyle="bold"
+        android:transitionName="food_price"
         android:layout_alignLeft="@+id/tv_price"
         android:layout_marginTop="10dp"
         android:id="@+id/tv_ingredients_label"

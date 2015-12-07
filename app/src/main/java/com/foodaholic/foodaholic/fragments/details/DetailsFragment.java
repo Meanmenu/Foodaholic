@@ -39,7 +39,7 @@ public class DetailsFragment extends Fragment {
             type.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
         }
 
-        score.setText(item.getScore());
+        score.setText(" "+item.getScore()+" ");
         likesCount.setText("30");
         reviewsCount.setText("10");
         photosCount.setText("5");
