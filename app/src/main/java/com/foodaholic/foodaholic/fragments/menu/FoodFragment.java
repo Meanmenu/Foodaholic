@@ -3,7 +3,9 @@ package com.foodaholic.foodaholic.fragments.menu;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -47,7 +49,12 @@ public abstract class FoodFragment extends Fragment {
                 Intent i = new Intent(getActivity(), DetailItemMenuActivity.class);
                 MenuItemData item = menuItemList.get(position);
                 i.putExtra("item", item);
-                startActivity(i);
+                Pair<View, String> p1 = Pair.create(v.findViewById(R.id.iv_item_menu), "food_image");
+                Pair<View, String> p2 = Pair.create(v.findViewById(R.id.tv_score), "score");
+                Pair<View, String> p3 = Pair.create(v.findViewById(R.id.tv_price), "food_price");
+                ActivityOptionsCompat options = ActivityOptionsCompat.
+                        makeSceneTransitionAnimation(getActivity(), p1, p2, p3);
+                getActivity().startActivity(i, options.toBundle());
             }
         });
         return v;

@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:scaleType="centerCrop"
+                android:transitionName="food_image"
                 android:src="@android:mipmap/sym_def_app_icon"
                 />
             <RelativeLayout
@@ -35,6 +36,7 @@
                     android:text="5.0"
                     android:layout_marginRight="15dp"
                     android:id="@+id/tv_score"
+                    android:transitionName="score"
                     android:layout_centerVertical="true"
                     android:layout_alignParentEnd="true"
                     android:textColor="@color/gold"
@@ -60,6 +62,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorPrimary"
                     android:fontFamily="sans-serif-medium"
+                    android:transitionName="food_price"
                     android:layout_marginLeft="15dp"
                     android:text="$5.64"
                     android:id="@+id/tv_price"

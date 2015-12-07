@@ -136,7 +136,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
                 startActivity(i);
                 return true;
             case android.R.id.home:
-                finish();
+                supportFinishAfterTransition();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
