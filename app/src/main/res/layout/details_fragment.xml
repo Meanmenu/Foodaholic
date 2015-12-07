@@ -50,17 +50,48 @@
         android:layout_below="@+id/tv_ingredients_label"
          />
 
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_below="@+id/tv_price"
+        android:layout_alignTop="@+id/tv_ingredients_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+            />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories"
+        android:textStyle="bold"
+        android:layout_alignLeft="@+id/tv_price"
+        android:layout_marginTop="10dp"
+        android:id="@+id/tv_calories_label"
+        android:layout_below="@+id/tv_ingredients"
+         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="250 Kcal"
+        android:layout_alignLeft="@+id/tv_price"
+        android:id="@+id/tv_calories"
+        android:layout_below="@+id/tv_calories_label"
+         />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
         android:id="@+id/relativeLayout"
-        android:layout_below="@+id/tv_ingredients"
+        android:layout_below="@+id/tv_calories"
         android:layout_centerHorizontal="true">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:id="@+id/tv_like_count"
             android:drawableLeft="@drawable/like"
             />
@@ -69,6 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/tv_reviews_count"
+            android:padding="10dp"
             android:layout_marginLeft="20dp"
             android:onClick="handleCommentsClick"
             android:layout_toRightOf="@id/tv_like_count"
@@ -78,6 +110,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dp"
             android:id="@+id/tv_photos_count"
             android:layout_marginLeft="20dp"
             android:onClick="handlePhotosClick"

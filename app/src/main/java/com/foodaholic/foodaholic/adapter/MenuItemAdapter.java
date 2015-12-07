@@ -37,7 +37,7 @@ public class MenuItemAdapter extends RecyclerView.Adapter<MenuItemAdapter.MenuIt
         final MenuItemData menuItem = menuItemList.get(position);
         holder.name.setText(menuItem.getItemName());
         Picasso.with(context).load(Uri.parse(menuItem.getPictureUrlList().get(0))).centerCrop().fit().into(holder.image);
-        holder.score.setText(" "+menuItem.getScore()+" ");
+        holder.score.setText(" " + menuItem.getScore() + " ");
     }
 
     @Override

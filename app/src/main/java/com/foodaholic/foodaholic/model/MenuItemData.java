@@ -3,8 +3,6 @@ package com.foodaholic.foodaholic.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.foodaholic.foodaholic.R;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,19 +13,22 @@ public class MenuItemData implements Parcelable {
     private String description;
     private double score;
     private String cuisine;
+    private String type;
 
     public MenuItemData(List<String> pictureUrlList,
                         String itemName,
                         List<Review> reviews,
                         String description,
                         double score,
-                        String cuisine) {
+                        String cuisine,
+                        String type) {
         this.pictureUrlList = pictureUrlList;
         this.itemName = itemName;
         this.reviews = reviews;
         this.description = description;
         this.score = score;
         this.cuisine = cuisine;
+        this.type = type;
     }
 
 
@@ -63,6 +64,14 @@ public class MenuItemData implements Parcelable {
         return cuisine;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "MenuItemData{" +
@@ -88,6 +97,7 @@ public class MenuItemData implements Parcelable {
         dest.writeString(this.description);
         dest.writeDouble(this.score);
         dest.writeString(this.cuisine);
+        dest.writeString(this.type);
     }
 
     protected MenuItemData(Parcel in) {
@@ -98,6 +108,7 @@ public class MenuItemData implements Parcelable {
         this.description = in.readString();
         this.score = in.readDouble();
         this.cuisine = in.readString();
+        this.type = in.readString();
     }
 
     public static final Creator<MenuItemData> CREATOR = new Creator<MenuItemData>() {
