@@ -14,14 +14,18 @@ import android.widget.ListView;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
+import com.foodaholic.foodaholic.client.LocuAPI;
 import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.model.PlaceData;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.apache.http.Header;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -40,14 +44,12 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     private static final String ARG_PARAM1 = "name";
     private static final String ARG_PARAM2 = "lat";
     private static final String ARG_PARAM3 = "lon";
+    private static final String ARG_PARAM4 = "radius";
 
-    // TODO: Rename and change types of parameters
     private String name; // currently hard coded as food
     private double lat;
     private double lon;
-
-    private OnFragmentInteractionListener mListener;
-    private YelpAPI yelpApi;
+    private long radius; // hard coded as 1000 meters
 
     @Nullable
     @Override
@@ -61,12 +63,13 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     }
 
     // TODO: Rename and change types of parameters
-    public static PlacesListFragment newInstance(String name, double lat, double lon) {
+    public static PlacesListFragment newInstance(String name, double lat, double lon, long radius) {
         PlacesListFragment fragment = new PlacesListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, name);
         args.putDouble(ARG_PARAM2, lat);
         args.putDouble(ARG_PARAM3, lon);
+        args.putLong(ARG_PARAM4, radius);
         fragment.setArguments(args);
         return fragment;
     }
@@ -86,40 +89,115 @@ public class PlacesListFragment extends Fragment implements LocationListener {
             name = getArguments().getString(ARG_PARAM1);
             lat = getArguments().getDouble(ARG_PARAM2);
             lon = getArguments().getDouble(ARG_PARAM3);
+            radius = getArguments().getLong(ARG_PARAM4);
         }
 
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
+        //getPlacesFromYelp();
+
+        getPlacesFromLocu();
+    }
+
+    private void getPlacesFromYelp() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
                 YelpAPI yelp = YelpAPI.getYelpClient();
                 // TODO: get current location and call yelp.searchByCoordinate
-                String businesses = yelp.searchByCoordinate(name, lat, lon);
+                String businesses = yelp.searchByCoordinate(name, lat, lon, radius);
                 try {
-                    return processJson(businesses);
+                    return processJsonYelp(businesses);
                 } catch (JSONException e) {
                     return businesses;
                 }
             }
-
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 aPlaces.notifyDataSetChanged();
 
             }
-        }.execute();
 
+        }.execute();
+    }
+
+    private void fillPlacesFromYelp(List<PlaceData> places) {
+        for( final PlaceData place : places) {
+            new AsyncTask<Void, Void, String>() {
+                @Override
+                protected String doInBackground(Void... params) {
+                    YelpAPI yelp = YelpAPI.getYelpClient();
+                    // TODO: get current location and call yelp.searchByCoordinate
+                    String businesses = yelp.searchByCoordinate(place.getName(), place.getLat(), place.getLon(), 100);
+                    try {
+                        return processJsonYelpMerge(businesses, place);
+                    } catch (JSONException e) {
+                        return businesses;
+                    }
+                }
+                @Override
+                protected void onPostExecute(String s) {
+                    super.onPostExecute(s);
+
+                }
+
+            }.execute();
+
+        }
+    }
+
+    private void getPlacesFromLocu() {
+        LocuAPI locu = LocuAPI.getLocuClient();
+        final YelpAPI yelp = YelpAPI.getYelpClient();
+
+        locu.fetchVenues("restaurants", lat, lon, 500, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    JSONArray venues = response.getJSONArray("venues");
+                    places.clear();
+                    places.addAll(PlaceData.fromJsonArrayLocu(venues));
+                    fillPlacesFromYelp(places);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                aPlaces.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+        });
 
     }
 
-    String processJson(String jsonStuff) throws JSONException {
+    String processJsonYelp(String jsonStuff) throws JSONException {
         JSONObject json = new JSONObject(jsonStuff);
         JSONArray businesses = json.getJSONArray("businesses");
         places.clear();
-        places.addAll(PlaceData.fromJsonArray(businesses));
+        places.addAll(PlaceData.fromJsonArrayYelp(businesses));
         return String.valueOf(json.getInt("total"));
+    }
+
+    String processJsonYelpMerge(String jsonStuff, PlaceData place) throws JSONException {
+        JSONObject json = new JSONObject(jsonStuff);
+        JSONArray businesses = json.getJSONArray("businesses");
+        if (businesses.length() == 0) {
+            return "0";
+        }
+        else {
+            PlaceData.fromJsonYelpMerge(businesses.getJSONObject(0), place);
+            return String.valueOf(json.getInt("total"));
+        }
     }
 
 //    @Override
@@ -136,7 +214,6 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
     @Override

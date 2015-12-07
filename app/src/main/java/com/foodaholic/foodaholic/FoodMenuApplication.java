@@ -2,11 +2,6 @@ package com.foodaholic.foodaholic;
 
 import android.app.Application;
 
-import com.facebook.FacebookSdk;
-import com.foodaholic.foodaholic.model.Review;
-import com.parse.Parse;
-import com.parse.ParseObject;
-
 /**
  * Created by maygupta on 12/5/15.
  */
@@ -18,9 +13,9 @@ public class FoodMenuApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        ParseObject.registerSubclass(Review.class);
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
-        FacebookSdk.sdkInitialize(getApplicationContext());
+//        ParseObject.registerSubclass(Review.class);
+//        Parse.enableLocalDatastore(this);
+//        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+//        FacebookSdk.sdkInitialize(getApplicationContext());
     }
 }
