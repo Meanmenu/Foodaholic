@@ -28,6 +28,9 @@ public class DetailsFragment extends Fragment {
         TextView reviewsCount = (TextView) v.findViewById(R.id.tv_reviews_count);
         TextView photosCount = (TextView) v.findViewById(R.id.tv_photos_count);
         TextView type = (TextView) v.findViewById(R.id.tv_type);
+        TextView price = (TextView) v.findViewById(R.id.tv_price);
+        TextView ingredients = (TextView) v.findViewById(R.id.tv_ingredients);
+        TextView calories = (TextView) v.findViewById(R.id.tv_calories);
 
         String typeText = item.getType();
         type.setText(typeText);
@@ -36,13 +39,16 @@ public class DetailsFragment extends Fragment {
         } else if (typeText.equals("Non Vegetarian")) {
             type.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
         } else if (typeText.equals("Vegan")) {
-            type.setTextColor(getResources().getColor(android.R.color.holo_orange_dark));
+            type.setTextColor(getResources().getColor(R.color.gold));
         }
 
         score.setText(" "+item.getScore()+" ");
+        price.setText(item.getPrice());
         likesCount.setText("30");
         reviewsCount.setText("10");
         photosCount.setText("5");
+        ingredients.setText(item.getIngredients());
+        calories.setText(item.getCalories());
         return v;
     }
 }

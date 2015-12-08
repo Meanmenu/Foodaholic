@@ -10,6 +10,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -68,6 +69,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
 
         }
     };
+    private PlacesMapFragment placesMapFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,11 +110,6 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         startService(serviceIntent);
 
         getLocation();
-        //mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        String name = makeFragmentName(viewPager.getId(), 0);
-//        PlacesListFragment fragment = (PlacesListFragment) getSupportFragmentManager().findFragmentByTag(name);
-//        fragment.places = this.places;
-
     }
 
     public void getLocation() {
@@ -131,6 +128,9 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         } else {
             //this.canGetLocation = true;
             if (isNetworkEnabled) {
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                }
                 locationManager.requestLocationUpdates(
                         LocationManager.NETWORK_PROVIDER,
                         60000,
@@ -194,6 +194,10 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
 
     }
 
+    public void drawPlaceOnMap(PlaceData place) {
+        placesMapFragment.drawPlaceOnMap(place);
+    }
+
     public class PlacesPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = {"Places", "Map"};
 
@@ -207,7 +211,8 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
                 // TODO: use configurable variable for name and radius
                 return PlacesListFragment.newInstance("food", lat, lon, 1000);
             } else if (position == 1) {
-                return new PlacesMapFragment();
+                placesMapFragment = new PlacesMapFragment();
+                return placesMapFragment;
             }
 
             return null;

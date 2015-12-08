@@ -30,7 +30,7 @@ public class PlacesArrayAdapter extends ArrayAdapter<PlaceData> {
     // TODO: ViewHolder pattern
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        PlaceData place = getItem(position);
+        final PlaceData place = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_place, parent, false);
@@ -52,7 +52,7 @@ public class PlacesArrayAdapter extends ArrayAdapter<PlaceData> {
             public void onClick(View v) {
                 String placeName = v.getTag().toString();
                 Intent i = new Intent(context, MenuActivity.class);
-                i.putExtra("screen_name", placeName);
+                i.putExtra(MenuActivity.PLACE, place);
                 context.startActivity(i);
             }
         });

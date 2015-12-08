@@ -12,21 +12,38 @@ public class MenuItemData implements Parcelable {
     private List<Review> reviews; //TODO this should be a complex object
     private String description;
     private double score;
+    private double price;
     private String cuisine;
     private String type;
+    private String calories;
+    private String ingredients;
+
+    public String getPrice() {
+        return "$" + String.valueOf(price);
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public MenuItemData(List<String> pictureUrlList,
                         String itemName,
                         List<Review> reviews,
                         String description,
                         double score,
+                        double price,
                         String cuisine,
-                        String type) {
+                        String type,
+                        String calories,
+                        String ingredients) {
         this.pictureUrlList = pictureUrlList;
         this.itemName = itemName;
         this.reviews = reviews;
         this.description = description;
         this.score = score;
+        this.price = price;
+        this.calories = calories;
+        this.ingredients = ingredients;
         this.cuisine = cuisine;
         this.type = type;
     }
@@ -98,6 +115,25 @@ public class MenuItemData implements Parcelable {
         dest.writeDouble(this.score);
         dest.writeString(this.cuisine);
         dest.writeString(this.type);
+        dest.writeDouble(this.price);
+        dest.writeString(this.calories);
+        dest.writeString(this.ingredients);
+    }
+
+    public String getCalories() {
+        return calories + " Kcal";
+    }
+
+    public void setCalories(String calories) {
+        this.calories = calories;
+    }
+
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
     }
 
     protected MenuItemData(Parcel in) {
@@ -109,6 +145,10 @@ public class MenuItemData implements Parcelable {
         this.score = in.readDouble();
         this.cuisine = in.readString();
         this.type = in.readString();
+        this.price = in.readDouble();
+        this.calories = in.readString();
+        this.ingredients = in.readString();
+
     }
 
     public static final Creator<MenuItemData> CREATOR = new Creator<MenuItemData>() {

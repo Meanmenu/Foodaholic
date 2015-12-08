@@ -186,9 +186,9 @@ public class DetailItemMenuActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 vpPager.setCurrentItem(tab.getPosition());
-                if(tab.getText().equals(REVIEWS)){
+                if (tab.getText().equals(REVIEWS)) {
                     fab.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     fab.setVisibility(View.GONE);
                 }
             }
