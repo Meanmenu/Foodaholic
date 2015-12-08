@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Foodaholic</string>
 
-    <string name="title_activity_places">PlacesActivity</string>
+    <string name="title_activity_places">Foodaholic</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
