@@ -11,4 +11,7 @@
     <color name="divider">#B6B6B6</color>
     <color name="gold">#FFC602</color>
     <color name="partial_black">#20000000</color>
+    <color name="main_color">#FFFF9007</color>
+    <color name="secondary_color">#4CAF50</color>
+
 </resources>

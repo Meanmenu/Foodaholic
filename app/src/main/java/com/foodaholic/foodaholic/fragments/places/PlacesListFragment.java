@@ -2,6 +2,7 @@ package com.foodaholic.foodaholic.fragments.places;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,8 +12,9 @@ import android.widget.ListView;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
-import com.foodaholic.foodaholic.model.PlaceData;
 import com.foodaholic.foodaholic.client.YelpAPI;
+import com.foodaholic.foodaholic.model.PlaceData;
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +33,7 @@ public class PlacesListFragment extends Fragment {
     public ArrayList<PlaceData> places = new ArrayList<>();
     public PlacesArrayAdapter aPlaces;
     protected ListView lvPlaces;
+    AnimatedCircleLoadingView animatedCircleLoadingView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,10 +52,13 @@ public class PlacesListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_places_list, container, false);
         lvPlaces = (ListView) v.findViewById(R.id.lvPlaces);
+        aPlaces = new PlacesArrayAdapter(getActivity(), places);
         lvPlaces.setAdapter(aPlaces);
+        animatedCircleLoadingView = (AnimatedCircleLoadingView) v.findViewById(R.id.circle_loading_view);
+        animatedCircleLoadingView.startIndeterminate();
 
+        loadPlaces();
         return v;
-
     }
 
     // TODO: Rename and change types of parameters
@@ -72,23 +78,14 @@ public class PlacesListFragment extends Fragment {
     public PlacesListFragment() {
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-
-        aPlaces = new PlacesArrayAdapter(getActivity(), places);
-
+    public void loadPlaces() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... params) {
                 YelpAPI yelp = YelpAPI.getYelpClient();
                 // TODO: get current location and call yelp.searchByCoordinate
                 String businesses = yelp.searchByLocation("food", "seattle");
+                SystemClock.sleep(5000);
                 try {
                     return processJson(businesses);
                 } catch (JSONException e) {
@@ -99,8 +96,9 @@ public class PlacesListFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                animatedCircleLoadingView.stopOk();
+                animatedCircleLoadingView.setVisibility(View.GONE);
                 aPlaces.notifyDataSetChanged();
-
             }
         }.execute();
     }
