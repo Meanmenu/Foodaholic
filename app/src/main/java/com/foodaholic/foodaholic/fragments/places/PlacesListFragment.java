@@ -102,9 +102,9 @@ public class PlacesListFragment extends Fragment implements LocationListener {
 
     }
     public void loadPlaces() {
-        getPlacesFromYelp();
+//        getPlacesFromYelp();
 
-//        getPlacesFromLocu();
+        getPlacesFromLocu();
     }
     private void getPlacesFromYelp() {
         new AsyncTask<Void, Void, String>() {
@@ -139,6 +139,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                     YelpAPI yelp = YelpAPI.getYelpClient();
                     // TODO: get current location and call yelp.searchByCoordinate
                     String businesses = yelp.searchByCoordinate(place.getName(), place.getLat(), place.getLon(), 100);
+                    SystemClock.sleep(5000);
                     try {
                         return processJsonYelpMerge(businesses, place);
                     } catch (JSONException e) {
