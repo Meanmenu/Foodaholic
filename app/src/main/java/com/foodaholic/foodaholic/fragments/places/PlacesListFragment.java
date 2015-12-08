@@ -66,6 +66,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
         animatedCircleLoadingView.startIndeterminate();
 
         getPlacesFromLocu();
+//        getPlacesFromYelp();
         return v;
     }
 
@@ -132,6 +133,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                     YelpAPI yelp = YelpAPI.getYelpClient();
                     // TODO: get current location and call yelp.searchByCoordinate
                     String businesses = yelp.searchByCoordinate(place.getName(), place.getLat(), place.getLon(), 100);
+                    SystemClock.sleep(2000);
                     try {
                         return processJsonYelpMerge(businesses, place);
                     } catch (JSONException e) {
@@ -140,7 +142,8 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                 }
                 @Override
                 protected void onPostExecute(String s) {
-                    Log.i("PlacesListFragment", "" + s);
+                    animatedCircleLoadingView.stopOk();
+                    animatedCircleLoadingView.setVisibility(View.GONE);
                     super.onPostExecute(s);
 
                     if (place.getImageUrl()== null){

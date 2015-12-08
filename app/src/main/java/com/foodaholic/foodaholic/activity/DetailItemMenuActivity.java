@@ -3,17 +3,24 @@ package com.foodaholic.foodaholic.activity;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -31,6 +38,7 @@ import com.foodaholic.foodaholic.model.MenuItemData;
 import com.foodaholic.foodaholic.model.Review;
 import com.viewpagerindicator.CirclePageIndicator;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -55,6 +63,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private static Profile profile;
     private ProfileTracker mProfileTracker;
+    AddReviewFragment fragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,8 +80,21 @@ public class DetailItemMenuActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (callbackManager.onActivityResult(requestCode, resultCode, data)) {
+        if (callbackManager != null && callbackManager.onActivityResult(requestCode, resultCode, data)) {
             return;
+        }
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+           if (resultCode == RESULT_OK) {
+             Uri takenPhotoUri = getPhotoFileUri(photoFileName);
+             // by this point we have the camera photo on disk
+             Bitmap bmp = BitmapFactory.decodeFile(takenPhotoUri.getPath());
+             // Load the taken image into a preview
+             Bitmap takenImage = Bitmap.createScaledBitmap(bmp, 400, 300, true);
+
+             fragment.setReview(takenImage);
+           } else { // Result was a failure
+               Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+           }
         }
     }
 
@@ -132,7 +154,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
 
     private void startReviw() {
         FragmentManager fm = getFragmentManager();
-        AddReviewFragment fragment = AddReviewFragment.newInstance();
+        fragment = AddReviewFragment.newInstance();
         fragment.setListener(new ReviewsFragment.AddReviewListener() {
             @Override
             public void finish(Review r) {
@@ -165,9 +187,9 @@ public class DetailItemMenuActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 vpPager.setCurrentItem(tab.getPosition());
-                if(tab.getText().equals(REVIEWS)){
+                if (tab.getText().equals(REVIEWS)) {
                     fab.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     fab.setVisibility(View.GONE);
                 }
             }
@@ -216,5 +238,50 @@ public class DetailItemMenuActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public final String APP_TAG = "MyCustomApp";
+    public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
+    public String photoFileName = "photo.jpg";
+
+    public void onLaunchCamera(View view) {
+        // create Intent to take a picture and return control to the calling application
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, getPhotoFileUri(photoFileName)); // set the image file name
+
+        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
+        // So as long as the result is not null, it's safe to use the intent.
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            // Start the image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+
+    // Returns the Uri for a photo stored on disk given the fileName
+    public Uri getPhotoFileUri(String fileName) {
+        // Only continue if the SD Card is mounted
+        if (isExternalStorageAvailable()) {
+            // Get safe storage directory for photos
+            File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), APP_TAG);
+
+            // Create the storage directory if it does not exist
+            if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+                Log.d(APP_TAG, "failed to create directory");
+            }
+
+            // Return the file target for the photo based on filename
+            return Uri.fromFile(new File(mediaStorageDir.getPath() + File.separator + fileName));
+        }
+        return null;
+    }
+
+    private boolean isExternalStorageAvailable() {
+        String state = Environment.getExternalStorageState();
+        if (state.equals(Environment.MEDIA_MOUNTED)) {
+            return true;
+        }
+        return false;
     }
 }

@@ -30,6 +30,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
         TextView reviewDate;
         TextView reviewScore;
         TextView reviewUsername;
+        ImageView reviewImage;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public ViewHolder(View itemView) {
@@ -42,6 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
             reviewScore = (TextView) itemView.findViewById(R.id.tvReviewScore);
             reviewUsername = (TextView) itemView.findViewById(R.id.tvReviewUsername);
             reviewUserImageUrl = (ImageView) itemView.findViewById(R.id.ivUser);
+            reviewImage = (ImageView) itemView.findViewById(R.id.ivReview);
         }
     }
 
@@ -75,6 +77,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
 
         viewHolder.reviewUserImageUrl.setImageResource(android.R.color.transparent);
         Picasso.with(mContext).load(review.getUserImageUrl()).into(viewHolder.reviewUserImageUrl);
+
+        if (review.reviewImage != null) {
+            viewHolder.reviewImage.setImageBitmap(review.reviewImage);
+            viewHolder.reviewImage.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

@@ -3,13 +3,14 @@ package com.foodaholic.foodaholic.fragments.details;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ import com.squareup.picasso.Picasso;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -41,6 +41,7 @@ public class AddReviewFragment extends DialogFragment {
     ReviewsFragment.AddReviewListener listener;
     EditText review;
     ImageView profileImage;
+    ImageView ivReview;
 
     private int curLength = 0;
     private RatingBar rbScore;
@@ -72,6 +73,7 @@ public class AddReviewFragment extends DialogFragment {
                 "https://graph.facebook.com/"+id+"/picture",
                 sdf.format(new Date()),
                 etReviewText.getText().toString());
+        r.reviewImage = ((BitmapDrawable)ivReview.getDrawable()).getBitmap();
         listener.finish(r);
         dismiss();
     }
@@ -87,6 +89,7 @@ public class AddReviewFragment extends DialogFragment {
         review = (EditText) view.findViewById(R.id.et_review);
         final TextView characters = (TextView) view.findViewById(R.id.tv_characters);
         rbScore = (RatingBar) view.findViewById(R.id.ratingBar);
+        ivReview = (ImageView) view.findViewById(R.id.ivReview);
         // Show soft keyboard automatically and request focus to field
         review.requestFocus();
         getDialog().getWindow().setSoftInputMode(
@@ -138,6 +141,10 @@ public class AddReviewFragment extends DialogFragment {
         });
     }
 
+    public void setReview(Bitmap takenImage) {
+        ivReview.setImageBitmap(takenImage);
+    }
+
         @Override
     public void onStart(){
         super.onStart();
@@ -149,4 +156,5 @@ public class AddReviewFragment extends DialogFragment {
             dialog.getWindow().setLayout(width, height);
         }
     }
+
 }
