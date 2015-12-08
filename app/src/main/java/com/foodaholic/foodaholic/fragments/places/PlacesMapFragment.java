@@ -40,7 +40,7 @@ public class PlacesMapFragment extends Fragment implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
-    private SupportMapFragment mapFragment;
+    private SupportMapFragment fragment;
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
@@ -274,9 +274,9 @@ public class PlacesMapFragment extends Fragment implements
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(new OnMapReadyCallback() {
+        fragment = ((SupportMapFragment) this.getChildFragmentManager().findFragmentById(R.id.map));
+        if (fragment != null) {
+            fragment.getMapAsync(new OnMapReadyCallback() {
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
