@@ -73,7 +73,9 @@ public class AddReviewFragment extends DialogFragment {
                 "https://graph.facebook.com/"+id+"/picture",
                 sdf.format(new Date()),
                 etReviewText.getText().toString());
-        r.reviewImage = ((BitmapDrawable)ivReview.getDrawable()).getBitmap();
+        if ( ivReview.getDrawable() != null) {
+            r.reviewImage = ((BitmapDrawable) ivReview.getDrawable()).getBitmap();
+        }
         listener.finish(r);
         dismiss();
     }
