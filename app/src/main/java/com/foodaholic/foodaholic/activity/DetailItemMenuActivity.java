@@ -89,7 +89,7 @@ public class DetailItemMenuActivity extends AppCompatActivity {
              // by this point we have the camera photo on disk
              Bitmap bmp = BitmapFactory.decodeFile(takenPhotoUri.getPath());
              // Load the taken image into a preview
-             Bitmap takenImage = Bitmap.createScaledBitmap(bmp, 500, 300, true);
+             Bitmap takenImage = Bitmap.createScaledBitmap(bmp, 400, 300, true);
 
              fragment.setReview(takenImage);
            } else { // Result was a failure
