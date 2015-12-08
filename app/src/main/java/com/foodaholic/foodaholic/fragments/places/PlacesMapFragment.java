@@ -96,6 +96,7 @@ public class PlacesMapFragment extends Fragment implements
         if (map != null) {
             // Map is ready
             map.setMyLocationEnabled(true);
+            map.getUiSettings().setZoomControlsEnabled(true);
 
             // Now that map has loaded, let's get our location!
             mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
