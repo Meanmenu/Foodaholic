@@ -1,5 +1,6 @@
 package com.foodaholic.foodaholic.model;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.parse.ParseClassName;
@@ -21,6 +22,7 @@ public class Review extends ParseObject implements Serializable {
     private String userImageUrl;
     private String date;
     private String body;
+    public Bitmap reviewImage;
 
     public Review(double score, String username, String userImageUrl, String date, String body) {
         this.score = score;

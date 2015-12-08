@@ -102,9 +102,9 @@ public class PlacesListFragment extends Fragment implements LocationListener {
 
     }
     public void loadPlaces() {
-        //getPlacesFromYelp();
+        getPlacesFromYelp();
 
-        getPlacesFromLocu();
+//        getPlacesFromLocu();
     }
     private void getPlacesFromYelp() {
         new AsyncTask<Void, Void, String>() {
@@ -147,6 +147,8 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                 }
                 @Override
                 protected void onPostExecute(String s) {
+                    animatedCircleLoadingView.stopOk();
+                    animatedCircleLoadingView.setVisibility(View.GONE);
                     super.onPostExecute(s);
                     aPlaces.notifyDataSetChanged();
 

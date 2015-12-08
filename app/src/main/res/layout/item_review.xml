@@ -68,8 +68,13 @@
         android:layout_toRightOf="@+id/ivUser"
         android:layout_toEndOf="@+id/ivUser" />
 
-
-
-
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"
+        android:id="@+id/ivReview"
+        android:layout_alignLeft="@+id/tvReviewBody"
+        android:layout_below="@id/tvReviewBody"/>
 
 </RelativeLayout>
