@@ -18,7 +18,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.client.YelpAPI;
@@ -209,7 +208,7 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         public Fragment getItem(int position) {
             if (position == 0) {
                 // TODO: use configurable variable for name and radius
-                return PlacesListFragment.newInstance("food", lat, lon, 1000);
+                return PlacesListFragment.newInstance("restaurants", lat, lon, 1000);
             } else if (position == 1) {
                 placesMapFragment = new PlacesMapFragment();
                 return placesMapFragment;

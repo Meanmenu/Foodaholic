@@ -19,9 +19,8 @@ import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
 import com.foodaholic.foodaholic.client.LocuAPI;
 import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.model.PlaceData;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.JsonHttpResponseHandler;
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -162,7 +161,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     private void getPlacesFromLocu() {
         LocuAPI locu = LocuAPI.getLocuClient();
         Log.i(getClass().getSimpleName(), ""+lat);
-        locu.fetchVenues("restaurants", lat, lon, 500, new JsonHttpResponseHandler() {
+        locu.fetchVenues(name, lat, lon, radius, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
