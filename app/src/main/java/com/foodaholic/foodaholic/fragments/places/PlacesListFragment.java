@@ -4,6 +4,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.foodaholic.foodaholic.client.LocuAPI;
 import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.model.PlaceData;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
 import org.apache.http.Header;
 import org.json.JSONArray;
@@ -38,6 +40,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     public ArrayList<PlaceData> places = new ArrayList<>();
     public PlacesArrayAdapter aPlaces;
     protected ListView lvPlaces;
+    AnimatedCircleLoadingView animatedCircleLoadingView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -56,10 +59,13 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_places_list, container, false);
         lvPlaces = (ListView) v.findViewById(R.id.lvPlaces);
+        aPlaces = new PlacesArrayAdapter(getActivity(), places);
         lvPlaces.setAdapter(aPlaces);
+        animatedCircleLoadingView = (AnimatedCircleLoadingView) v.findViewById(R.id.circle_loading_view);
+        animatedCircleLoadingView.startIndeterminate();
 
+        loadPlaces();
         return v;
-
     }
 
     // TODO: Rename and change types of parameters
@@ -94,11 +100,12 @@ public class PlacesListFragment extends Fragment implements LocationListener {
 
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
+    }
+    public void loadPlaces() {
         //getPlacesFromYelp();
 
         getPlacesFromLocu();
     }
-
     private void getPlacesFromYelp() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -106,6 +113,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                 YelpAPI yelp = YelpAPI.getYelpClient();
                 // TODO: get current location and call yelp.searchByCoordinate
                 String businesses = yelp.searchByCoordinate(name, lat, lon, radius);
+                SystemClock.sleep(5000);
                 try {
                     return processJsonYelp(businesses);
                 } catch (JSONException e) {
@@ -115,8 +123,9 @@ public class PlacesListFragment extends Fragment implements LocationListener {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+                animatedCircleLoadingView.stopOk();
+                animatedCircleLoadingView.setVisibility(View.GONE);
                 aPlaces.notifyDataSetChanged();
-
             }
 
         }.execute();
