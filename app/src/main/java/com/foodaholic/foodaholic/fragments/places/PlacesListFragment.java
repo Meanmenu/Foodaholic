@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.activity.PlacesActivity;
 import com.foodaholic.foodaholic.adapter.PlacesArrayAdapter;
 import com.foodaholic.foodaholic.client.LocuAPI;
 import com.foodaholic.foodaholic.client.YelpAPI;
 import com.foodaholic.foodaholic.model.PlaceData;
+import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.github.jlmd.animatedcircleloadingview.AnimatedCircleLoadingView;
 
@@ -64,7 +66,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
         animatedCircleLoadingView = (AnimatedCircleLoadingView) v.findViewById(R.id.circle_loading_view);
         animatedCircleLoadingView.startIndeterminate();
 
-        loadPlaces();
+        getPlacesFromLocu();
         return v;
     }
 
@@ -78,13 +80,6 @@ public class PlacesListFragment extends Fragment implements LocationListener {
         args.putLong(ARG_PARAM4, radius);
         fragment.setArguments(args);
         return fragment;
-    }
-
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public PlacesListFragment() {
     }
 
     @Override
@@ -101,11 +96,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
         aPlaces = new PlacesArrayAdapter(getActivity(), places);
 
     }
-    public void loadPlaces() {
-        //getPlacesFromYelp();
 
-        getPlacesFromLocu();
-    }
     private void getPlacesFromYelp() {
         new AsyncTask<Void, Void, String>() {
             @Override
@@ -131,11 +122,14 @@ public class PlacesListFragment extends Fragment implements LocationListener {
         }.execute();
     }
 
-    private void fillPlacesFromYelp(List<PlaceData> places) {
-        for( final PlaceData place : places) {
+    private void fillPlacesFromYelp(final List<PlaceData> places) {
+        Log.i("PlacesListFragment", ""+places);
+        List<PlaceData> placeDataList = new ArrayList<PlaceData>(places);
+        for( final PlaceData place : placeDataList) {
             new AsyncTask<Void, Void, String>() {
                 @Override
                 protected String doInBackground(Void... params) {
+                    Log.i("PlacesListFragment", ""+place);
                     YelpAPI yelp = YelpAPI.getYelpClient();
                     // TODO: get current location and call yelp.searchByCoordinate
                     String businesses = yelp.searchByCoordinate(place.getName(), place.getLat(), place.getLon(), 100);
@@ -147,7 +141,15 @@ public class PlacesListFragment extends Fragment implements LocationListener {
                 }
                 @Override
                 protected void onPostExecute(String s) {
+                    Log.i("PlacesListFragment", "" + s);
                     super.onPostExecute(s);
+
+                    if (place.getImageUrl()== null){
+                        places.remove(place);
+                    }else{
+                        ((PlacesActivity) getActivity()).drawPlaceOnMap(place);
+                    }
+
                     aPlaces.notifyDataSetChanged();
 
                 }
@@ -159,12 +161,18 @@ public class PlacesListFragment extends Fragment implements LocationListener {
 
     private void getPlacesFromLocu() {
         LocuAPI locu = LocuAPI.getLocuClient();
-        final YelpAPI yelp = YelpAPI.getYelpClient();
-
+        Log.i(getClass().getSimpleName(), ""+lat);
         locu.fetchVenues("restaurants", lat, lon, 500, new JsonHttpResponseHandler() {
 
             @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.i(getClass().getSimpleName(), "" + statusCode);
+            }
+
+            @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.i("PlacesListFragment", ""+statusCode);
                 try {
                     JSONArray venues = response.getJSONArray("venues");
                     places.clear();
@@ -177,13 +185,9 @@ public class PlacesListFragment extends Fragment implements LocationListener {
             }
 
             @Override
-            public void onFinish() {
-                super.onFinish();
-            }
-
-            @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.i("PlacesListFragment", "" + statusCode);
             }
         });
 

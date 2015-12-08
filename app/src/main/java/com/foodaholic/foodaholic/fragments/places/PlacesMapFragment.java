@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.foodaholic.foodaholic.R;
+import com.foodaholic.foodaholic.model.PlaceData;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,7 +27,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,10 +94,8 @@ public class PlacesMapFragment extends Fragment implements
     }
 
     protected void loadMap(GoogleMap googleMap) {
-        map = googleMap;
         if (map != null) {
             // Map is ready
-            Toast.makeText(getActivity(), "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
             map.setMyLocationEnabled(true);
 
             // Now that map has loaded, let's get our location!
@@ -147,9 +152,8 @@ public class PlacesMapFragment extends Fragment implements
         // Display the connection status
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
-            Toast.makeText(getActivity(), "GPS location was found!", Toast.LENGTH_SHORT).show();
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
+            CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15);
             map.animateCamera(cameraUpdate);
             startLocationUpdates();
         } else {
@@ -171,7 +175,6 @@ public class PlacesMapFragment extends Fragment implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -215,6 +218,21 @@ public class PlacesMapFragment extends Fragment implements
             Toast.makeText(getActivity(),
                     "Sorry. Location services not available to you", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void drawPlaceOnMap(PlaceData place) {
+        // Set the color of the marker to green
+        BitmapDescriptor defaultMarker =
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+        // listingPosition is a LatLng point
+        LatLng listingPosition = new LatLng(place.getLat(), place.getLon());
+        // Create the marker on the fragment
+        DecimalFormat df = new DecimalFormat("0.0");
+        map.addMarker(new MarkerOptions()
+                .position(listingPosition)
+                .title(place.getName())
+                .snippet("Score: "+df.format(place.getScore()))
+                .icon(defaultMarker));
     }
 
     // Define a DialogFragment that displays the error dialog
@@ -262,7 +280,6 @@ public class PlacesMapFragment extends Fragment implements
         super.onStop();
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -274,11 +291,14 @@ public class PlacesMapFragment extends Fragment implements
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        mapFragment = ((SupportMapFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.map));
+        mapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
             mapFragment.getMapAsync(new OnMapReadyCallback() {
+
+
                 @Override
                 public void onMapReady(GoogleMap map) {
+                    PlacesMapFragment.this.map = map;
                     loadMap(map);
                 }
             });

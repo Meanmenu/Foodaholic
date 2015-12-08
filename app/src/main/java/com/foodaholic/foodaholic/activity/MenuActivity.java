@@ -13,12 +13,14 @@ import com.foodaholic.foodaholic.R;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab1Fragment;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab2Fragment;
 import com.foodaholic.foodaholic.fragments.menu.FoodTab3Fragment;
+import com.foodaholic.foodaholic.model.PlaceData;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MenuActivity extends BaseActivity {
-
+    public static final String PLACE = "PLACE";
+    private PlaceData place;
     @Bind(R.id.tabs) TabLayout tabLayout;
     @Bind(R.id.viewpager) ViewPager vpPager;
 
@@ -31,7 +33,9 @@ public class MenuActivity extends BaseActivity {
         toolbarCreation();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        getSupportActionBar().setTitle("Pearl's Deluxe"); //TODO Update this dynamically
+        place = (PlaceData) getIntent().getExtras().getSerializable(PLACE);
+
+        getSupportActionBar().setTitle(place.getName()); //TODO Update this dynamically
         ButterKnife.bind(this);
 
         MenuTypeAdapter adapter = new MenuTypeAdapter(getSupportFragmentManager());

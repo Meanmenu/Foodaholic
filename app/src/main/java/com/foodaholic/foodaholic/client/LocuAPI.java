@@ -1,5 +1,7 @@
 package com.foodaholic.foodaholic.client;
 
+import android.util.Log;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -71,6 +73,7 @@ public class LocuAPI {
 
     public void fetchVenues(String category, Double lat, Double lon, long radius, JsonHttpResponseHandler handler){
         String url = "https://" + API_HOST + SEARCH_PATH;
+        Log.i(getClass().getSimpleName(), url);
         JSONObject json = generatePostSearchRestaurants(category, lat, lon, radius);
         StringEntity entity = null;
         try {
