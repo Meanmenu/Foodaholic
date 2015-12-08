@@ -1,6 +1,11 @@
 package com.foodaholic.foodaholic.activity;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,19 +31,43 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class PlacesActivity extends BaseActivity implements PlacesMapFragment.OnFragmentInteractionListener {
+public class PlacesActivity extends BaseActivity implements PlacesMapFragment.OnFragmentInteractionListener, LocationListener {
     ArrayList<PlaceData> places;
 
-    @Bind(R.id.viewpager) ViewPager viewPager;
-    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.viewpager)
+    ViewPager viewPager;
+    @Bind(R.id.tabs)
+    TabLayout tabLayout;
 
     double lat;
     double lon;
-    String location;
-    LocationManager mLocationManager;
+    Location location;
+    LocationManager locationManager;
 
     String url = "https://api.yelp.com/v2/search/?term=food&ll=37.77493,-122.419415";
     YelpAPI yelpApi;
+
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,16 +107,90 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         Intent serviceIntent = new Intent(this, EddystoneScannerService.class);
         startService(serviceIntent);
 
-        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+        getLocation();
+        //mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 //        String name = makeFragmentName(viewPager.getId(), 0);
 //        PlacesListFragment fragment = (PlacesListFragment) getSupportFragmentManager().findFragmentByTag(name);
 //        fragment.places = this.places;
 
     }
 
+    public void getLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        // getting GPS status
+        boolean isGPSEnabled = locationManager
+                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+        // getting network status
+        boolean isNetworkEnabled = locationManager
+                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!isGPSEnabled && !isNetworkEnabled) {
+            // no network provider is enabled
+        } else {
+            //this.canGetLocation = true;
+            if (isNetworkEnabled) {
+                locationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER,
+                        60000,
+                        10, this);
+                Log.d("activity", "LOC Network Enabled");
+                if (locationManager != null) {
+                    location = locationManager
+                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    if (location != null) {
+                        Log.d("activity", "LOC by Network");
+                        lat = location.getLatitude();
+                        lon = location.getLongitude();
+                    }
+                }
+            }
+            // if GPS Enabled get lat/long using GPS Services
+            if (isGPSEnabled) {
+                if (location == null) {
+                    locationManager.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER,
+                            60000,
+                            10, this);
+                    Log.d("activity", "RLOC: GPS Enabled");
+                    if (locationManager != null) {
+                        location = locationManager
+                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if (location != null) {
+                            Log.d("activity", "RLOC: loc by GPS");
+
+                            lat = location.getLatitude();
+                            lon = location.getLongitude();
+                        }
+                    }
+                }
+            }
+        }
+    }
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = location.getLatitude();
+        lon = location.getLongitude();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
 
     }
 
@@ -100,7 +204,8 @@ public class PlacesActivity extends BaseActivity implements PlacesMapFragment.On
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                return new PlacesListFragment();
+                // TODO: use configurable variable for name and radius
+                return PlacesListFragment.newInstance("food", lat, lon, 1000);
             } else if (position == 1) {
                 return new PlacesMapFragment();
             }
