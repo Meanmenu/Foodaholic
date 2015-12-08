@@ -161,7 +161,7 @@ public class PlacesListFragment extends Fragment implements LocationListener {
     private void getPlacesFromLocu() {
         LocuAPI locu = LocuAPI.getLocuClient();
         Log.i(getClass().getSimpleName(), ""+lat);
-        locu.fetchVenues("restaurants", lat, lon, 500, new JsonHttpResponseHandler() {
+        locu.fetchVenues(name, lat, lon, radius, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
